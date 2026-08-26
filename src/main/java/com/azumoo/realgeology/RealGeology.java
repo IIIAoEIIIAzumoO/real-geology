@@ -3,6 +3,8 @@ package com.azumoo.realgeology;
 import com.azumoo.realgeology.compat.RegistryCompat;
 import com.azumoo.realgeology.debug.GeologyDebugCommands;
 import com.azumoo.realgeology.tools.GeologyPreviewExport;
+import com.azumoo.realgeology.worldgen.DebugCutawayPostGen;
+import com.azumoo.realgeology.worldgen.DebugCutawaySanitizerFeature;
 import com.azumoo.realgeology.worldgen.GeologicalProvincesFeature;
 import com.azumoo.realgeology.worldgen.OptionalOreRemovalModifier;
 import com.azumoo.realgeology.worldgen.TestWorldLandSpawn;
@@ -37,6 +39,8 @@ public final class RealGeology {
             "geological_provinces", () -> new GeologicalProvincesFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, VolcanicRockSanitizerFeature> VOLCANIC_ROCK_SANITIZER = FEATURES.register(
             "volcanic_rock_sanitizer", () -> new VolcanicRockSanitizerFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, DebugCutawaySanitizerFeature> DEBUG_CUTAWAY_SANITIZER = FEATURES.register(
+            "debug_cutaway_sanitizer", () -> new DebugCutawaySanitizerFeature(NoneFeatureConfiguration.CODEC));
     public static final Supplier<MapCodec<OptionalOreRemovalModifier>> OPTIONAL_ORE_REMOVER =
             BIOME_MODIFIERS.register("optional_ore_remover", () -> OptionalOreRemovalModifier.CODEC);
     public static final DeferredHolder<Block, Block> KIMBERLITE = RegistryCompat.KIMBERLITE;
@@ -49,6 +53,8 @@ public final class RealGeology {
         NeoForge.EVENT_BUS.addListener(GeologyDebugCommands::register);
         NeoForge.EVENT_BUS.addListener(GeologyDebugCommands::restoreOnShutdown);
         NeoForge.EVENT_BUS.addListener(GeologyDebugCommands::advanceJobs);
+        NeoForge.EVENT_BUS.addListener(DebugCutawayPostGen::onChunkLoad);
+        NeoForge.EVENT_BUS.addListener(DebugCutawayPostGen::onServerTick);
         NeoForge.EVENT_BUS.addListener(TestWorldLandSpawn::chooseLandSpawn);
         NeoForge.EVENT_BUS.addListener(GeologyPreviewExport::onServerStarted);
         LOGGER.info("Real Geology registered");

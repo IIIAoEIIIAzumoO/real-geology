@@ -135,7 +135,7 @@ worldgen_mode = "half_cut"
 force_collision_belt = true
 ```
 
-Stand on the positive-X side and look west along the cut plane for layer exposure. Fluids are stripped in the removed half and on the block adjacent to the cut face so waterfalls do not spill into the void.
+Stand on the positive-X side and look west along the cut plane for layer exposure. A late `debug_cutaway_sanitizer` feature runs after trees/snow/grass and clears the removed half to air; fluids are stripped in the removed half plus a two-block buffer on the kept side (X = 0 and X = 1), with a second pass two ticks after chunk load to stop post-gen flow.
 
 ## Simulating a Modrinth install (optional)
 

@@ -108,10 +108,11 @@ public final class RealGeologyConfig {
             };
         }
 
-        /** Columns where fluids should not remain — removed volume plus one block on the kept side. */
+        /** Columns where fluids should not remain — removed volume plus a buffer on the kept side. */
         public boolean stripsFluidsAt(int x, int z) {
             if (cutsAt(x, z)) return true;
             if (!isActive()) return false;
+            if (this == HALF_CUT && x >= 0 && x <= 1) return true;
             return cutsAt(x - 1, z) || cutsAt(x + 1, z) || cutsAt(x, z - 1) || cutsAt(x, z + 1);
         }
     }

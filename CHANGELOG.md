@@ -15,9 +15,11 @@ Beta republish: **vanilla ore spawning** while custom deposits finish developmen
 - Removed the biome modifier that stripped vanilla `minecraft:ore_*` placed features
 - Disabled Real Geology custom deposit placement in worldgen (hosted ore blocks remain registered but do not generate)
 
-### Notes
+### Fixed
 
-- Folded strata, provinces, faults, and intrusions are unchanged
+- Debug cutaways (`section`, `ores`, `half_cut`): late `debug_cutaway_sanitizer` feature clears vegetation, snow, and structures in removed columns after all other worldgen steps
+- Fluid stripping: two-block buffer at the `half_cut` plane (X = 0–1) plus a delayed re-strip on chunk load to prevent flowing water/lava
+
 - Custom deposit shapes (porphyry stockworks, kimberlite pipes, MVT districts, etc.) are planned for the next update
 
 ## 0.21.0-beta.1 — 2026-08-26
