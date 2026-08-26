@@ -147,6 +147,21 @@ Gradle dev always loads Real Geology from sources. To stage JARs like a player i
 
 Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Still launch with `runPublishTestClient` for NeoForge.
 
+
+## View distance (modpack parity)
+
+Every `./scripts/launch-test-instance.sh` run merges **only** these keys from the modpack `options.txt` into `run-publish-test/options.txt` (other keys in the test instance are left unchanged):
+
+| Key | Modern Industry & Colonies (example) |
+|-----|--------------------------------------|
+| `renderDistance` | 16 |
+| `simulationDistance` | 12 |
+| `entityDistanceScaling` | 1.0 |
+
+Source: `MODPACK_GAME_DIR/options.txt` (default `~/.minecraft/versions/Modern Industry & Colonies/options.txt`). Gradle `runPublishTestClient` uses `run-publish-test/` as `gameDirectory`, so Minecraft reads that `options.txt` on launch.
+
+`config/sodium-options.json` has no chunk/render-distance fields in this pack (quality/performance only). With `--shaders`, the modpack `sodium-options.json` and `iris.properties` (including `maxShadowRenderDistance`) are copied wholesale; distance limits above come from vanilla `options.txt`.
+
 ## Screenshots / shaders
 
 Optional — **not** part of the published mod or Modrinth dependency list. Shader mods are never listed in `neoforge.mods.toml` or the Modrinth dependency graph.

@@ -23,8 +23,8 @@ Options:
   --server        Launch dedicated server (same as positional "server")
   --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
-  --shaders       Copy Sodium/Iris JARs, shaderpack(s), and Iris/Sodium config from modpack
-  --dry-run       With --shaders: list copies only; do not build or launch
+  --shaders       Copy Sodium/Iris JARs, shaderpack(s), Iris/Sodium config from modpack
+  --dry-run       List staging actions only; do not build or launch
   --help          Show this help
 
 Environment:
@@ -87,6 +87,45 @@ copy_modpack_file() {
     echo "    Copied: $rel"
   fi
   return 0
+}
+
+
+merge_modpack_distance_options() {
+  echo "==> Syncing render/simulation distance from modpack options.txt"
+  if [[ ! -d "$MODPACK_GAME_DIR" ]]; then
+    echo "    Skipped — MODPACK_GAME_DIR not found: $MODPACK_GAME_DIR" >&2
+    return 1
+  fi
+  local src="$MODPACK_GAME_DIR/options.txt"
+  local dest="$GAME_DIR/options.txt"
+  if [[ ! -f "$src" ]]; then
+    echo "    Skipped — no modpack options.txt" >&2
+    return 1
+  fi
+  local keys=(renderDistance simulationDistance entityDistanceScaling)
+  local key val
+  for key in "${keys[@]}"; do
+    val="$(grep -E "^${key}:" "$src" | head -1 || true)"
+    if [[ -z "$val" ]]; then
+      echo "    Skipped $key — not in modpack options.txt" >&2
+      continue
+    fi
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      echo "    Would set in $dest: $val"
+      continue
+    fi
+    mkdir -p "$GAME_DIR"
+    if [[ ! -f "$dest" ]]; then
+      touch "$dest"
+    fi
+    if grep -qE "^${key}:" "$dest"; then
+      sed -i "s/^${key}:.*/${val}/" "$dest"
+    else
+      echo "$val" >> "$dest"
+    fi
+    echo "    Set: $val"
+  done
+  echo
 }
 
 stage_shaderpacks_and_config() {
@@ -242,6 +281,8 @@ if [[ "$STAGE_JARS" -eq 1 ]]; then
   echo "    Staged: realgeology-${VERSION}.jar + libs/*.jar"
   echo
 fi
+
+merge_modpack_distance_options
 
 if [[ "$ENABLE_SHADERS" -eq 1 ]]; then
   stage_shader_mods
