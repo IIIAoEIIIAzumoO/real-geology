@@ -7,7 +7,7 @@ Status as of **2026-08-26** (mod `0.21.0-beta.2`).
 | Target | NeoForge | Java | Gradle plugin | Compile | Runtime |
 |--------|----------|------|---------------|---------|---------|
 | **1.21.1** | `21.1.248` | 21 | ModDevGradle `2.0.144` | ✅ | ✅ Full (GeoStrata required) |
-| **26.2** | `26.2.0.66` | 25 | NeoGradle userdev `7.1.38` | ✅ | ⚠️ Partial (no GeoStrata) |
+| **26.2** | `26.2.0.66` | 25 | NeoGradle userdev `7.1.38` | ✅ | ✅ Boots (no GeoStrata; vanilla rock fallback) |
 
 NeoForge **does exist** for Minecraft 26.2. Official MDK: [NeoForgeMDKs/MDK-26.2-NeoGradle](https://github.com/NeoForgeMDKs/MDK-26.2-NeoGradle).
 
@@ -26,7 +26,7 @@ Requires **Gradle 9.1+** (project uses 9.2.1) and **Java 25** for the 26.2 subpr
 Real Geology's stratigraphy, ore hosts, and block models reference `geostrata:*` blocks extensively (~30 rock types, hosted ore parents). Without GeoStrata:
 
 - The mod **compiles** for 26.2
-- The mod **loads** (GeoStrata dependency removed from 26.2 `neoforge.mods.toml`)
+- The mod **loads and reaches the main menu** (GeoStrata dependency removed from 26.2 `neoforge.mods.toml`)
 - Underground generation uses **`RockPalette` vanilla fallback** (stone/deepslate/granite/basalt/tuff mapped by rock name)
 - Hosted ore JSON models still parent `geostrata:block/ore_block` — **missing textures/models** until GeoStrata ports or owned rock blocks ship (see [ROADMAP.md](ROADMAP.md))
 
@@ -79,12 +79,16 @@ Shared code uses version-specific `GameCompat` shims for breaking changes:
 | `BuiltInRegistries.BLOCK.get(id)` | `BuiltInRegistries.BLOCK.getValue(id)` |
 | `hasPermission(2)` | `permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)` |
 | `getSharedSpawnPos()` / `setDefaultSpawnPos()` | `getRespawnData()` / `setRespawnData()` |
+| `DeferredRegister.create(Registries.BLOCK, …)` | `DeferredRegister.createBlocks(…)` + `registerBlock` / `registerSimpleBlock` (`.setId` required on properties) |
+| `DeferredRegister.create(Registries.ITEM, …)` | `DeferredRegister.createItems(…)` + `registerSimpleBlockItem` |
 
 `RockPalette` resolves rock names to GeoStrata blocks when present, else vanilla substitutes.
 
+Block/item registration lives in version-specific `RegistryCompat` (`neoforge-1.21.1/…` vs `neoforge-26.2/…`); shared `RealGeology` delegates to it.
+
 ## Not yet done
 
-- [x] In-game boot test on NeoForge 26.2 client — **fails** at registry (`realgeology:coal_ore` / block id not set); use `run-publish-test-26.2` + `./scripts/launch-test-instance-26.2.sh`
+- [x] In-game boot test on NeoForge 26.2 client — **passes** (2026-08-26): `./gradlew :neoforge-26.2:runPublishTestClient` reaches main menu; hosted ore models warn without GeoStrata (expected)
 - [ ] Modrinth second game version entry for 26.2 (wait until GeoStrata or owned rocks)
 - [ ] Replace `geostrata:block/ore_block` model parents for 26.2 standalone mode
 - [ ] CI matrix building both subprojects
