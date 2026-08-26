@@ -18,7 +18,9 @@ Beta republish: **vanilla ore spawning** while custom deposits finish developmen
 ### Fixed
 
 - Debug cutaways (`section`, `ores`, `half_cut`): late `debug_cutaway_sanitizer` feature clears vegetation, snow, and structures in removed columns after all other worldgen steps
-- Fluid stripping: two-block buffer at the `half_cut` plane (X = 0–1) plus a delayed re-strip on chunk load to prevent flowing water/lava
+- Fluid stripping: four-block buffer at the `half_cut` plane (X = 0–3) plus a delayed re-strip on chunk load to prevent flowing water/lava
+- Debug screenshot worlds: fluid physics frozen while `worldgen_mode` is active (`section` / `ores` / `half_cut`) — static pond/lake appearance, no cliff waterfalls
+- Test instance `--screenshot-mods` flag: optional WorldEdit from modpack for manual `//fixwater` QA
 
 - Custom deposit shapes (porphyry stockworks, kimberlite pipes, MVT districts, etc.) are planned for the next update
 

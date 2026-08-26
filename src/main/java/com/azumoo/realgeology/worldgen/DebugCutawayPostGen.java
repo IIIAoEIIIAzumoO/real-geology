@@ -52,6 +52,7 @@ public final class DebugCutawayPostGen {
             }
         }
         for (Pending pending : ready) {
+            DebugFluidFreeze.stabilizeFluidsInChunk(pending.level, pending.origin());
             DebugCutawaySanitizer.sanitizeChunk(pending.level, pending.origin(), 3);
         }
     }

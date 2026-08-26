@@ -13,6 +13,7 @@ MODE="client"
 DO_BUILD=1
 STAGE_JARS=0
 ENABLE_SHADERS="${ENABLE_SHADERS:-0}"
+ENABLE_SCREENSHOT_MODS="${ENABLE_SCREENSHOT_MODS:-0}"
 DRY_RUN=0
 
 usage() {
@@ -24,6 +25,7 @@ Options:
   --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
   --shaders       Copy Sodium/Iris JARs, shaderpack(s), Iris/Sodium config from modpack
+  --screenshot-mods  Copy WorldEdit from modpack for manual //fixwater QA (optional)
   --dry-run       List staging actions only; do not build or launch
   --help          Show this help
 
@@ -31,6 +33,7 @@ Environment:
   MODPACK_MODS    Folder to copy GeoStrata/Architectury from if libs/ is empty
   MODPACK_GAME_DIR  Modpack instance root (default: parent of MODPACK_MODS)
   ENABLE_SHADERS  Set to 1 to enable --shaders (same as passing --shaders)
+  ENABLE_SCREENSHOT_MODS  Set to 1 to enable --screenshot-mods
 USAGE
 }
 
@@ -41,6 +44,7 @@ while [[ $# -gt 0 ]]; do
     --no-build) DO_BUILD=0; shift ;;
     --stage-jars) STAGE_JARS=1; shift ;;
     --shaders) ENABLE_SHADERS=1; shift ;;
+    --screenshot-mods) ENABLE_SCREENSHOT_MODS=1; shift ;;
     --dry-run) DRY_RUN=1; shift ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 1 ;;
@@ -242,6 +246,19 @@ stage_shader_mods() {
   echo
 }
 
+stage_screenshot_mods() {
+  echo "==> Staging screenshot utility mods (test instance only — not in release JAR)"
+  copy_optional_mod_patterns "WorldEdit" \
+    "worldedit-mod-*.jar" \
+    "worldedit-neoforge-*.jar" && {
+      echo "    Optional manual fix: //wand then //fixwater <radius> after worldgen (Real Geology debug freeze is usually enough)."
+      echo
+      return 0
+    }
+  echo "    No WorldEdit JAR found — continuing without it (Real Geology debug fluid freeze is built in)."
+  echo
+}
+
 verify_libs() {
   local missing=0
   for pattern in "geostrata-*-NEOFORGE.jar" "architectury-*-neoforge.jar"; do
@@ -286,6 +303,10 @@ merge_modpack_distance_options
 
 if [[ "$ENABLE_SHADERS" -eq 1 ]]; then
   stage_shader_mods
+fi
+
+if [[ "$ENABLE_SCREENSHOT_MODS" -eq 1 ]]; then
+  stage_screenshot_mods
 fi
 
 if [[ "$DRY_RUN" -eq 1 ]]; then

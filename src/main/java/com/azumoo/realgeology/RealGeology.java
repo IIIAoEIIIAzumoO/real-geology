@@ -4,6 +4,7 @@ import com.azumoo.realgeology.compat.RegistryCompat;
 import com.azumoo.realgeology.debug.GeologyDebugCommands;
 import com.azumoo.realgeology.tools.GeologyPreviewExport;
 import com.azumoo.realgeology.worldgen.DebugCutawayPostGen;
+import com.azumoo.realgeology.worldgen.DebugFluidFreeze;
 import com.azumoo.realgeology.worldgen.DebugCutawaySanitizerFeature;
 import com.azumoo.realgeology.worldgen.GeologicalProvincesFeature;
 import com.azumoo.realgeology.worldgen.OptionalOreRemovalModifier;
@@ -55,6 +56,10 @@ public final class RealGeology {
         NeoForge.EVENT_BUS.addListener(GeologyDebugCommands::advanceJobs);
         NeoForge.EVENT_BUS.addListener(DebugCutawayPostGen::onChunkLoad);
         NeoForge.EVENT_BUS.addListener(DebugCutawayPostGen::onServerTick);
+        NeoForge.EVENT_BUS.addListener(DebugFluidFreeze::onServerStarted);
+        NeoForge.EVENT_BUS.addListener(DebugFluidFreeze::onLevelTickPre);
+        NeoForge.EVENT_BUS.addListener(DebugFluidFreeze::onFluidPlaceBlock);
+        NeoForge.EVENT_BUS.addListener(DebugFluidFreeze::onCreateFluidSource);
         NeoForge.EVENT_BUS.addListener(TestWorldLandSpawn::chooseLandSpawn);
         NeoForge.EVENT_BUS.addListener(GeologyPreviewExport::onServerStarted);
         LOGGER.info("Real Geology registered");

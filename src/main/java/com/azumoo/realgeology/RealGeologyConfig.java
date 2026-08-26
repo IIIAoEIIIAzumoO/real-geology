@@ -129,7 +129,7 @@ public final class RealGeologyConfig {
         public boolean stripsFluidsAt(int x, int z) {
             if (cutsAt(x, z)) return true;
             if (!isActive()) return false;
-            if (this == HALF_CUT && x >= 0 && x <= 1) return true;
+            if (this == HALF_CUT && x >= 0 && x <= 3) return true;
             return cutsAt(x - 1, z) || cutsAt(x + 1, z) || cutsAt(x, z - 1) || cutsAt(x, z + 1);
         }
     }

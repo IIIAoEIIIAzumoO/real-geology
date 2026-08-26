@@ -135,7 +135,9 @@ worldgen_mode = "half_cut"
 force_collision_belt = true
 ```
 
-Stand on the positive-X side and look west along the cut plane for layer exposure. A late `debug_cutaway_sanitizer` feature runs after trees/snow/grass and clears the removed half to air; fluids are stripped in the removed half plus a two-block buffer on the kept side (X = 0 and X = 1), with a second pass two ticks after chunk load to stop post-gen flow.
+Stand on the positive-X side and look west along the cut plane for layer exposure. A late `debug_cutaway_sanitizer` feature runs after trees/snow/grass and clears the removed half to air; fluids are stripped in the removed half plus a four-block buffer on the kept side (X = 0 through X = 3), with a delayed re-strip on chunk load.
+
+While any debug `worldgen_mode` is active (`section`, `ores`, or `half_cut`), Real Geology also **freezes fluid physics** in the overworld: scheduled fluid ticks are cleared each tick, fluid spread events are cancelled, and `randomTickSpeed` is set to 0 on server start. Ponds and lakes keep a static water/lava appearance instead of flowing over cut faces. Use a **new disposable world** after changing debug config so chunks and gamerules pick up the freeze.
 
 ## Simulating a Modrinth install (optional)
 
@@ -195,6 +197,24 @@ ENABLE_SHADERS=1 ./scripts/launch-test-instance.sh      # same via env var
 4. In game, **Options → Video Settings → Shader Packs** should show the pack enabled (Iris reads `iris.properties` on startup).
 
 To use a different pack without the modpack: drop the `.zip` into `run-publish-test/shaderpacks/`, set `shaderPack=` in `run-publish-test/config/iris.properties`, restart the client.
+
+### Optional WorldEdit (`--screenshot-mods`)
+
+Real Geology’s debug fluid freeze (above) is the primary fix for cliff waterfalls. For extra manual cleanup, stage **WorldEdit** from the modpack:
+
+```bash
+./scripts/launch-test-instance.sh --screenshot-mods --dry-run
+./scripts/launch-test-instance.sh --screenshot-mods
+ENABLE_SCREENSHOT_MODS=1 ./scripts/launch-test-instance.sh
+```
+
+Copies `worldedit-mod-*.jar` from `MODPACK_MODS` into `run-publish-test/mods/`. In game (operator): `//wand`, select area, `//fixwater <radius>` — converts flowing water to source blocks (less useful on modern MC than the built-in freeze).
+
+Combine with shaders when needed:
+
+```bash
+./scripts/launch-test-instance.sh --shaders --screenshot-mods
+```
 
 
 ## Dev vs publish debug policy
