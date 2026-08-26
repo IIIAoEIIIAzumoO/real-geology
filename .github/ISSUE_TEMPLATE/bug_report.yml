@@ -1,0 +1,34 @@
+name: Bug report
+description: Worldgen bug, crash, or unexpected underground layout
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Real Geology only affects **newly generated chunks**. Always note whether you created a fresh test world.
+  - type: input
+    id: version
+    attributes:
+      label: Real Geology version
+      placeholder: "0.21.0-beta.1"
+    validations:
+      required: true
+  - type: input
+    id: seed
+    attributes:
+      label: World seed
+      placeholder: "12345 or text seed"
+    validations:
+      required: true
+  - type: input
+    id: coords
+    attributes:
+      label: Coordinates (X Y Z)
+      placeholder: "0 ~ -512"
+  - type: textarea
+    id: steps
+    attributes:
+      label: What happened?
+      description: Include other mods (GeoStrata version, Terralith yes/no) and config changes.
+    validations:
+      required: true

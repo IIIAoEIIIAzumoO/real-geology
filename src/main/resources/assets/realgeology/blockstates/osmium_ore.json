@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/osmium_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/osmium_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/osmium_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/osmium_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/osmium_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/osmium_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/osmium_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/osmium_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/osmium_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/osmium_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/osmium_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/osmium_ore/hornfels"},
+    "host=limestone": {"model":"realgeology:block/osmium_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/osmium_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/osmium_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/osmium_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/osmium_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/osmium_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/osmium_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/osmium_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/osmium_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/osmium_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/osmium_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/osmium_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/osmium_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/osmium_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/osmium_ore/tuff"}
+  }
+}

@@ -34,7 +34,16 @@ bin/
 
 ### Minecraft Modding ###
 run/
+run-geology-*/
 !**/src/**/run/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+logs/
+backups/
+
+### Local dev dependencies (GeoStrata etc.) ###
+libs/*.jar
+
+### Release artifacts (attach via GitHub/Modrinth releases) ###
+dist/

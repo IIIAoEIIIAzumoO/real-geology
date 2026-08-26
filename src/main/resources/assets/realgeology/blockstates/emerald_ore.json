@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/emerald_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/emerald_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/emerald_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/emerald_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/emerald_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/emerald_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/emerald_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/emerald_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/emerald_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/emerald_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/emerald_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/emerald_ore/hornfels"},
+    "host=kimberlite": {"model":"realgeology:block/emerald_ore/kimberlite"},
+    "host=limestone": {"model":"realgeology:block/emerald_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/emerald_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/emerald_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/emerald_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/emerald_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/emerald_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/emerald_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/emerald_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/emerald_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/emerald_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/emerald_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/emerald_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/emerald_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/emerald_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/emerald_ore/tuff"}
+  }
+}

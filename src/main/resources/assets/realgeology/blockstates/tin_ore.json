@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/tin_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/tin_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/tin_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/tin_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/tin_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/tin_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/tin_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/tin_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/tin_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/tin_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/tin_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/tin_ore/hornfels"},
+    "host=limestone": {"model":"realgeology:block/tin_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/tin_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/tin_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/tin_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/tin_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/tin_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/tin_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/tin_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/tin_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/tin_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/tin_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/tin_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/tin_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/tin_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/tin_ore/tuff"}
+  }
+}

@@ -1,0 +1,1 @@
+{"type":"neoforge:remove_features","biomes":"#minecraft:is_overworld","features":["geostrata:coal_ore","geostrata:iron_ore","geostrata:copper_ore","geostrata:gold_ore","geostrata:redstone_ore","geostrata:lapis_ore","geostrata:diamond_ore","geostrata:emerald_ore"],"step":"underground_ores"}

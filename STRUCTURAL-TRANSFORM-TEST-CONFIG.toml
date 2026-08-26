@@ -1,0 +1,7 @@
+# Copy the two values in this [debug] section into
+# config/realgeology-common.toml before creating one disposable test world.
+# Restore both values afterwards; generated debug trenches remain in that world.
+
+[debug]
+worldgen_mode = "section"
+force_collision_belt = true

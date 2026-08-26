@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/gold_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/gold_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/gold_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/gold_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/gold_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/gold_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/gold_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/gold_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/gold_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/gold_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/gold_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/gold_ore/hornfels"},
+    "host=kimberlite": {"model":"realgeology:block/gold_ore/kimberlite"},
+    "host=limestone": {"model":"realgeology:block/gold_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/gold_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/gold_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/gold_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/gold_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/gold_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/gold_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/gold_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/gold_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/gold_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/gold_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/gold_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/gold_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/gold_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/gold_ore/tuff"}
+  }
+}

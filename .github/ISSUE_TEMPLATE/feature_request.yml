@@ -1,0 +1,22 @@
+name: Feature / geology idea
+description: Suggest a formation, deposit, or roadmap item
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should Real Geology do?
+      description: Link to ROADMAP.md items if relevant (karst caves, owned rock blocks, etc.)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Worldgen / strata
+        - Caves / karst
+        - Ores / deposits
+        - New rock blocks
+        - Documentation / tooling
+        - Other

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/uranium_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/uranium_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/uranium_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/uranium_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/uranium_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/uranium_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/uranium_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/uranium_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/uranium_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/uranium_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/uranium_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/uranium_ore/hornfels"},
+    "host=limestone": {"model":"realgeology:block/uranium_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/uranium_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/uranium_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/uranium_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/uranium_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/uranium_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/uranium_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/uranium_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/uranium_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/uranium_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/uranium_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/uranium_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/uranium_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/uranium_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/uranium_ore/tuff"}
+  }
+}

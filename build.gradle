@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.144'
+    id 'com.modrinth.minotaur' version '2.8.10'
     id 'idea'
 }
 
@@ -62,7 +63,19 @@ neoForge {
         server {
             server()
             programArgument '--nogui'
+            gameDirectory = project.file('run-geology-minimal')
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+        // A headless, one-shot server used only to boot Minecraft's registry,
+        // sample the real structural generator, export SVG sections, then quit.
+        geologyPreview {
+            server()
+            programArgument '--nogui'
+            // Reuse the known-good minimal dev configuration; a blank NeoForge
+            // directory cannot load GeoStrata's common config safely.
+            gameDirectory = project.file('run-geology-minimal')
+            systemProperty 'realgeology.render_sections', 'true'
+            systemProperty 'realgeology.preview_output', project.file('build/cross-sections').absolutePath
         }
         // This run config launches GameTestServer and runs all registered gametests, then exits.
         // By default, the server will crash when no gametests are provided.
@@ -116,6 +129,13 @@ configurations {
 }
 
 dependencies {
+    // Minimal runtime integration test. Nothing from this path is bundled into
+    // the released JAR; it proves the direct GeoStrata integration separately
+    // from the much larger personal modpack.
+    // Optional local JARs for dev runs — see libs/README.md. Not bundled in releases.
+    fileTree(dir: 'libs', include: ['*.jar']).each { jar ->
+        localRuntime files(jar)
+    }
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -187,4 +207,18 @@ idea {
         downloadSources = true
         downloadJavadoc = true
     }
+}
+
+// Upload with: MODRINTH_TOKEN=... ./gradlew modrinth
+// See MODRINTH-SETUP.md for first-time project creation.
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN") ?: ""
+    projectId = System.getenv("MODRINTH_PROJECT_ID") ?: "real-geology"
+    versionNumber = mod_version
+    versionName = "Folded strata beta"
+    versionType = "beta"
+    changelog = rootProject.file("CHANGELOG.md").text
+    uploadFile = jar
+    gameVersions = [minecraft_version]
+    loaders = ["neoforge"]
 }

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "host=amphibolite": {"model":"realgeology:block/zinc_ore/amphibolite"},
+    "host=andesite": {"model":"realgeology:block/zinc_ore/andesite"},
+    "host=basalt": {"model":"realgeology:block/zinc_ore/basalt"},
+    "host=basaltic_glass": {"model":"realgeology:block/zinc_ore/basaltic_glass"},
+    "host=conglomerate": {"model":"realgeology:block/zinc_ore/conglomerate"},
+    "host=diabase": {"model":"realgeology:block/zinc_ore/diabase"},
+    "host=diorite": {"model":"realgeology:block/zinc_ore/diorite"},
+    "host=dolomite": {"model":"realgeology:block/zinc_ore/dolomite"},
+    "host=gabbro": {"model":"realgeology:block/zinc_ore/gabbro"},
+    "host=gneiss": {"model":"realgeology:block/zinc_ore/gneiss"},
+    "host=granite": {"model":"realgeology:block/zinc_ore/granite"},
+    "host=hornfels": {"model":"realgeology:block/zinc_ore/hornfels"},
+    "host=limestone": {"model":"realgeology:block/zinc_ore/limestone"},
+    "host=marble": {"model":"realgeology:block/zinc_ore/marble"},
+    "host=novaculite": {"model":"realgeology:block/zinc_ore/novaculite"},
+    "host=pegmatite": {"model":"realgeology:block/zinc_ore/pegmatite"},
+    "host=peridotite": {"model":"realgeology:block/zinc_ore/peridotite"},
+    "host=phyllite": {"model":"realgeology:block/zinc_ore/phyllite"},
+    "host=quartzite": {"model":"realgeology:block/zinc_ore/quartzite"},
+    "host=rhyolite": {"model":"realgeology:block/zinc_ore/rhyolite"},
+    "host=rock_salt": {"model":"realgeology:block/zinc_ore/rock_salt"},
+    "host=schist": {"model":"realgeology:block/zinc_ore/schist"},
+    "host=scoria": {"model":"realgeology:block/zinc_ore/scoria"},
+    "host=shale": {"model":"realgeology:block/zinc_ore/shale"},
+    "host=siltstone": {"model":"realgeology:block/zinc_ore/siltstone"},
+    "host=slate": {"model":"realgeology:block/zinc_ore/slate"},
+    "host=tuff": {"model":"realgeology:block/zinc_ore/tuff"}
+  }
+}
