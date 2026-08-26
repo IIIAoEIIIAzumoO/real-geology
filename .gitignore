@@ -50,4 +50,6 @@ dist/
 # Isolated beta publish test instance (NeoForge dev game dir)
 run-publish-test/*
 !run-publish-test/README.md
+run-publish-test-26.2/*
+!run-publish-test-26.2/README.md
 

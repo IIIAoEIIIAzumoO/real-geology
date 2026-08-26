@@ -50,6 +50,18 @@ runs {
     gameTestServer {
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
     }
+    publishTestClient {
+        configure 'client'
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        workingDirectory project.file("${root}/run-publish-test-26.2")
+    }
+    publishTestServer {
+        configure 'server'
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        argument '--nogui'
+        workingDirectory project.file("${root}/run-publish-test-26.2")
+    }
+
 }
 
 configurations {

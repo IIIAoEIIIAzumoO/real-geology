@@ -84,11 +84,11 @@ Shared code uses version-specific `GameCompat` shims for breaking changes:
 
 ## Not yet done
 
-- [ ] In-game boot test on NeoForge 26.2 client/server
+- [x] In-game boot test on NeoForge 26.2 client — **fails** at registry (`realgeology:coal_ore` / block id not set); use `run-publish-test-26.2` + `./scripts/launch-test-instance-26.2.sh`
 - [ ] Modrinth second game version entry for 26.2 (wait until GeoStrata or owned rocks)
 - [ ] Replace `geostrata:block/ore_block` model parents for 26.2 standalone mode
 - [ ] CI matrix building both subprojects
-- [ ] Update `scripts/launch-test-instance.sh` for 26.2 test instance
+- [x] `scripts/launch-test-instance-26.2.sh` + Gradle `publishTestClient` / `publishTestServer` in `neoforge-26.2/build.gradle`
 
 ## Recommended next steps
 

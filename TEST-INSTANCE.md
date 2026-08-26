@@ -2,6 +2,26 @@
 
 Isolated NeoForge **1.21.1** environment for pre-publish QA. Matches what testers get on Modrinth: Real Geology + GeoStrata (+ Architectury), vanilla overworld generation — **no Terralith**, no Modern Industry & Colonies pack.
 
+## NeoForge 26.2 bare test instance (no GeoStrata)
+
+Minecraft **26.2** / NeoForge **26.2.0.66** — Real Geology dev classpath only (`RockPalette` vanilla fallbacks). No GeoStrata or Architectury.
+
+| Path | Role |
+|------|------|
+| `run-publish-test-26.2/` | Game directory — gitignored except `README.md` |
+| `libs-26.2/` | Optional local JARs when GeoStrata 26.2 exists |
+
+Gradle runs: `publishTestClient` / `publishTestServer` → `:neoforge-26.2:runPublishTestClient` / `runPublishTestServer`.
+
+```bash
+./scripts/launch-test-instance-26.2.sh
+./gradlew :neoforge-26.2:build
+./gradlew :neoforge-26.2:runPublishTestClient
+```
+
+Pre-seed `run-publish-test-26.2/config/realgeology-common.toml` with `worldgen_mode = "section"` before first world (same as 1.21.1 publish test). Requires **Java 25** toolchain (Gradle Foojay).
+
+
 ## Current mod version
 
 Check `gradle.properties` (`mod_version`). As of setup: **0.21.0-beta.2** — vanilla ore spawning restored; custom Real Geology deposit placement disabled in worldgen (strata/provinces unchanged).
