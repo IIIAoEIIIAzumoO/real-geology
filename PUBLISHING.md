@@ -9,14 +9,14 @@ cd minecraft-givekit-project/geology-overhaul
 ./scripts/first-publish.sh
 ```
 
-That logs you into GitHub (browser), creates `AzumoO/real-geology`, pushes the code, and uploads `v0.21.0-beta.2` with the JAR.
+That logs you into GitHub (browser), creates `IIIAoEIIIAzumoO/real-geology`, pushes the code, and uploads `v0.21.0-beta.2` with the JAR.
 
 Then follow [MODRINTH-SETUP.md](MODRINTH-SETUP.md) for the Modrinth page (where testers actually download mods).
 
-Use a different GitHub account:
+Use a different GitHub account (e.g. personal `AzumoO`):
 
 ```bash
-GITHUB_USER=IIIAoEIIIAzumoO ./scripts/first-publish.sh
+GITHUB_USER=AzumoO ./scripts/first-publish.sh
 ```
 
 ---

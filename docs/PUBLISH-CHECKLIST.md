@@ -43,7 +43,7 @@ Last audited: 2026-08-26
 ## 2. Repository & GitHub (you)
 
 - [x] Local git history on `main` (9 commits ahead of NeoForge MDK template remote)
-- [x] [scripts/first-publish.sh](../scripts/first-publish.sh) — creates `AzumoO/real-geology`, pushes, tags `v0.21.0-beta.2`, uploads JAR
+- [x] [scripts/first-publish.sh](../scripts/first-publish.sh) — creates `IIIAoEIIIAzumoO/real-geology`, pushes, tags `v0.21.0-beta.2`, uploads JAR
 - [x] [.github/workflows/release.yml](../.github/workflows/release.yml) — auto-release on tag push
 - [x] Issue templates (bug report, feature request)
 - [ ] **GitHub CLI authenticated** — run once:
@@ -55,8 +55,8 @@ Last audited: 2026-08-26
   cd minecraft-givekit-project/geology-overhaul
   ./scripts/first-publish.sh
   ```
-  What it does: removes NeoForge MDK `origin` if present → creates public `AzumoO/real-geology` → pushes `main` → tags `v0.21.0-beta.2` → creates GitHub Release with JAR + CHANGELOG.
-- [ ] Verify: https://github.com/AzumoO/real-geology/releases/tag/v0.21.0-beta.2
+  What it does: removes NeoForge MDK `origin` if present → creates public `IIIAoEIIIAzumoO/real-geology` → pushes `main` → tags `v0.21.0-beta.2` → creates GitHub Release with JAR + CHANGELOG.
+- [x] Verify: https://github.com/IIIAoEIIIAzumoO/real-geology/releases/tag/v0.21.0-beta.2
 
 Different GitHub account:
 
@@ -80,7 +80,7 @@ GITHUB_USER=YourHandle ./scripts/first-publish.sh
   - File: `build/libs/realgeology-0.21.0-beta.2.jar`
   - Changelog: paste from [CHANGELOG.md](../CHANGELOG.md) (0.21.0-beta.2 section)
 - [ ] Set **manual dependency** note for GeoStrata (not on Modrinth yet — install from CurseForge)
-- [ ] Add GitHub link: `https://github.com/AzumoO/real-geology`
+- [ ] Add GitHub link: `https://github.com/IIIAoEIIIAzumoO/real-geology`
 - [ ] Add Ko-fi / external support link (optional)
 
 ---

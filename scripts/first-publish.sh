@@ -7,7 +7,7 @@ cd "$ROOT"
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-GITHUB_USER="${GITHUB_USER:-AzumoO}"
+GITHUB_USER="${GITHUB_USER:-IIIAoEIIIAzumoO}"
 REPO_NAME="${REPO_NAME:-real-geology}"
 VERSION="$(grep '^mod_version=' gradle.properties | cut -d= -f2)"
 TAG="v${VERSION}"

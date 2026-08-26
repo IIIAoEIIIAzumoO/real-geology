@@ -43,13 +43,13 @@ Real Geology **does not ship rock textures**. It arranges GeoStrata's named rock
 
 ### Known limitations (not beta blockers)
 
-Playtesting shows the mod is stable enough for exploration, but some province transitions are rough at biome edges (especially in debug section view). Full details: [Known issues — plate/province generation](https://github.com/AzumoO/real-geology/blob/main/docs/KNOWN-ISSUES-PLATE-GEN.md)
+Playtesting shows the mod is stable enough for exploration, but some province transitions are rough at biome edges (especially in debug section view). Full details: [Known issues — plate/province generation](https://github.com/IIIAoEIIIAzumoO/real-geology/blob/main/docs/KNOWN-ISSUES-PLATE-GEN.md)
 
-Other planned work: karst caves following soluble rock, owned sedimentary blocks, custom ore deposits — see [ROADMAP](https://github.com/AzumoO/real-geology/blob/main/ROADMAP.md).
+Other planned work: karst caves following soluble rock, owned sedimentary blocks, custom ore deposits — see [ROADMAP](https://github.com/IIIAoEIIIAzumoO/real-geology/blob/main/ROADMAP.md).
 
 ### Links
 
-- **Source & issues:** https://github.com/AzumoO/real-geology
+- **Source & issues:** https://github.com/IIIAoEIIIAzumoO/real-geology
 - **Support (optional):** https://ko-fi.com/azumoo
 
 ### License

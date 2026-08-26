@@ -20,7 +20,7 @@ Also add an external link (Ko-fi, Patreon) on the project page for direct tips.
 6. **Categories:** World Gen, Utility (optional: Adventure)
 7. **Client / server:** Both
 8. **License:** MIT
-9. **Links:** GitHub `https://github.com/AzumoO/real-geology`
+9. **Links:** GitHub `https://github.com/IIIAoEIIIAzumoO/real-geology`
 
 In the description, add a bold **Dependencies** block:
 

@@ -126,7 +126,7 @@ If this direction interests you, open an issue or PR. The generator is the hard 
 
 Real Geology is free and open source (MIT). If a beta world saves you time or you want karst caves sooner:
 
-- [GitHub Issues](https://github.com/AzumoO/real-geology/issues) — bug reports and feature discussion
+- [GitHub Issues](https://github.com/IIIAoEIIIAzumoO/real-geology/issues) — bug reports and feature discussion
 - [Ko-fi](https://ko-fi.com/azumoo) — optional tip jar (update the link if your handle differs)
 - Star the repo — helps other players find it
 
