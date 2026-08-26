@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** Seeded, chunk-order-independent provinces, folded strata, faults and deposits. */
+/** Seeded, chunk-order-independent provinces and folded strata. */
 public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfiguration> {
     /*
      * These are complete, ordered rock successions rather than the old short
@@ -171,7 +171,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         RealGeologyConfig.WorldgenDebugMode debugMode = RealGeologyConfig.worldgenDebugMode();
         int minX = o.getX() & ~15, minZ = o.getZ() & ~15, minY = Math.max(level.getMinBuildHeight(), -64);
         if (FIRST_PLACEMENT.compareAndSet(false, true)) {
-            RealGeology.LOGGER.info("Real Geology is generating provinces, folded strata and deposits in newly created chunks");
+            RealGeology.LOGGER.info("Real Geology is generating provinces and folded strata in newly created chunks");
         }
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int x = minX; x < minX + 16; x++) for (int z = minZ; z < minZ + 16; z++) {
@@ -246,10 +246,9 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
                     continue;
                 }
                 String host = host(seed, column, x, y, z);
-                // Kimberlite is a real, deep mantle-derived volcanic rock.
-                // It makes diamond a rare pipe-hosted occurrence instead of a
-                // generic deep stone ore.  The pipe is deliberately narrow.
-                if (diamondPipe(seed, p, x, y, z)) host = "kimberlite";
+                // Custom deposit placement (kimberlite pipes, hosted ores, etc.)
+                // is deferred until after the structural-geology beta. Vanilla
+                // ore features remain active in the meantime.
                 String ore = deposit(seed, column, host, x, y, z);
                 // Calcite is a mineral within carbonate rocks, not another
                 // interchangeable regional bedrock. It therefore appears as
@@ -887,6 +886,9 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
     }
 
     private static String deposit(long s, GeologicalColumn column, String host, int x, int y, int z) {
+        // 0.21 beta: strata and provinces only — vanilla ore features handle spawning.
+        return null;
+        /*
         Province p = column.province();
         double fine = noise(s + 101, x / 19d, z / 19d);
         BedPosition nativeBed = column.bedAt(y);
@@ -1018,6 +1020,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         // zones rather than pretending to be a universal natural metal ore.
         if (p == Province.VOLCANIC && y < 24 && noise(s + 187L, x / 78d, z / 78d) > .89d && fine > .20d) return "redstone";
         return null;
+        */
     }
 
     /** Narrow deep kimberlite pipes, independent of the other vein systems. */

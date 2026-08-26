@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.21.0-beta.2 — 2026-08-26
+
+Beta republish: **vanilla ore spawning** while custom deposits finish development.
+
+### Changed
+
+- Removed the biome modifier that stripped vanilla `minecraft:ore_*` placed features
+- Disabled Real Geology custom deposit placement in worldgen (hosted ore blocks remain registered but do not generate)
+
+### Notes
+
+- Folded strata, provinces, faults, and intrusions are unchanged
+- Custom deposit shapes (porphyry stockworks, kimberlite pipes, MVT districts, etc.) are planned for the next update
+
 ## 0.21.0-beta.1 — 2026-08-26
 
 First public beta. Focus: **folded strata and structural geology**.

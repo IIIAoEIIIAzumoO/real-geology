@@ -13,8 +13,8 @@ The current beta focus is **structural geology** — anticlines, synclines, fold
 - Terrain-guided provinces: ocean basin, passive margin, continental basin, collision belt, plutonic province, volcanic arc
 - Finite stratigraphic columns with smoothly varying bed thickness
 - Fold families in mountain belts, plus faults, dikes, contact aureoles, and angular unconformities
-- Deposit-specific shapes: porphyry Cu-Au stockworks, carbonate Pb-Zn districts, kimberlite pipes, banded iron, coal growth faults, and more
-- Host-aware ores with mineral-accurate names (cassiterite, sphalerite, galena, …) while keeping `c:ores/*` tags for modpack recipes
+- **Vanilla ore spawning** — coal, iron, copper, gold, diamond, and the rest use Minecraft's default worldgen for this beta
+- Hosted ore blocks and deposit logic are in the repo for the next release (porphyry stockworks, MVT districts, kimberlite pipes, and more)
 - Debug modes to inspect folds in disposable test worlds
 
 See [MATERIAL-CATALOG.md](MATERIAL-CATALOG.md) for the full ore mapping and [ROADMAP.md](ROADMAP.md) for what comes next (karst caves, owned rock blocks, surface hydrology).
@@ -26,13 +26,13 @@ See [MATERIAL-CATALOG.md](MATERIAL-CATALOG.md) for the full ore mapping and [ROA
 | **NeoForge 21.1.x** | Loader |
 | **[GeoStrata 1.2+](https://modrinth.com/mod/geostrata)** | Rock block library (shale, gneiss, limestone, …) |
 
-Real Geology **does not ship rock textures**. It arranges GeoStrata's named rocks into formations. This mod owns world generation, ore placement logic, ore overlay textures, and the kimberlite block.
+Real Geology **does not ship rock textures**. It arranges GeoStrata's named rocks into formations. This mod owns world generation and structural geology; ore placement uses vanilla Minecraft rules until the custom deposit pass ships.
 
 Terralith/Geophilic are optional but recommended: Real Geology reads biome and terrain tags when present to choose sedimentary facies and province type.
 
 ## Install (beta testers)
 
-1. Install NeoForge 1.21.1, **GeoStrata 1.2+**, and `realgeology-0.21.0-beta.1.jar`.
+1. Install NeoForge 1.21.1, **GeoStrata 1.2+**, and `realgeology-0.21.0-beta.2.jar`.
 2. Use a **copy** of your instance or a fresh profile — not your main survival world.
 3. Create a **brand-new world**. Existing terrain is never rewritten; only newly generated chunks use Real Geology.
 4. Explore underground or use debug modes (below).

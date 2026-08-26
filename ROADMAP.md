@@ -10,11 +10,18 @@ This document is the public backlog. Items are ordered roughly by dependency and
 - Finite stratigraphic columns with varying bed thickness
 - Collision-belt fold families: anticline/syncline, asymmetric fold-and-thrust, monocline
 - Post-depositional and syn-depositional faults, angular unconformities, cross-cutting dikes
-- Deposit-specific shapes (porphyry stockworks, MVT districts, kimberlite pipes, banded iron, and others)
-- Host-aware ore blocks with mineral-accurate names and `c:ores/*` compatibility
 - Debug section/ore raster modes and `/realgeology debug` commands
+- **Vanilla ore spawning** for beta testers (custom deposits deferred)
 
-## Next — karst and dissolution caves
+## Next — custom ore deposits
+
+Goal: re-enable Real Geology's deposit-specific shapes with host-aware ore blocks and mineral-accurate names.
+
+- Porphyry Cu-Au stockworks, MVT Pb-Zn districts, kimberlite pipes, banded iron, coal growth faults, and related deposit logic (code is present but disabled in 0.21.0-beta.2)
+- Host-aware ores with `c:ores/*` compatibility
+- Re-enable the optional competing-ore removal modifier once custom placement is stable
+
+## After deposits — karst and dissolution caves
 
 Goal: caves preferentially follow soft sediment between harder rock, as if acidic groundwater dissolved limestone, dolomite, and shale rather than punching random holes through everything.
 
