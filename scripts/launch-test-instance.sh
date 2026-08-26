@@ -11,6 +11,7 @@ LIBS_DIR="$ROOT/libs"
 MODE="client"
 DO_BUILD=1
 STAGE_JARS=0
+ENABLE_SHADERS="${ENABLE_SHADERS:-0}"
 
 usage() {
   cat <<'USAGE'
@@ -20,10 +21,12 @@ Options:
   --server        Launch dedicated server (same as positional "server")
   --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
+  --shaders       Copy Iris + Sodium NeoForge from MODPACK_MODS into run-publish-test/mods/
   --help          Show this help
 
 Environment:
   MODPACK_MODS    Folder to copy GeoStrata/Architectury from if libs/ is empty
+  ENABLE_SHADERS  Set to 1 to enable --shaders (same as passing --shaders)
 USAGE
 }
 
@@ -33,6 +36,7 @@ while [[ $# -gt 0 ]]; do
     --server) MODE="server"; shift ;;
     --no-build) DO_BUILD=0; shift ;;
     --stage-jars) STAGE_JARS=1; shift ;;
+    --shaders) ENABLE_SHADERS=1; shift ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -60,6 +64,33 @@ ensure_lib() {
   mkdir -p "$LIBS_DIR"
   cp -f "$src" "$LIBS_DIR/"
   echo "Copied $(basename "$src") -> libs/"
+}
+
+copy_optional_mod() {
+  local pattern="$1"
+  local label="$2"
+  if [[ ! -d "$MODPACK_MODS" ]]; then
+    echo "    Skipped $label — MODPACK_MODS not found: $MODPACK_MODS" >&2
+    return 1
+  fi
+  local src
+  src="$(find "$MODPACK_MODS" -maxdepth 1 -name "$pattern" -print -quit)"
+  if [[ -z "$src" ]]; then
+    echo "    Skipped $label — no $pattern in $MODPACK_MODS" >&2
+    return 1
+  fi
+  mkdir -p "$GAME_DIR/mods"
+  cp -f "$src" "$GAME_DIR/mods/"
+  echo "    Staged shader mod: $(basename "$src")"
+}
+
+stage_shader_mods() {
+  echo "==> Staging screenshot shader mods (test instance only — not in release JAR)"
+  copy_optional_mod "sodium-neoforge-*-mc1.21.1.jar" "Sodium NeoForge"
+  copy_optional_mod "iris-neoforge-*-mc1.21.1.jar" "Iris NeoForge"
+  echo "    NeoForge 1.21.1 stack: Sodium + Iris (from MODPACK_MODS or download from Modrinth)"
+  echo "    Place a shader pack in run-publish-test/shaderpacks/ and enable in Video Settings."
+  echo
 }
 
 verify_libs() {
@@ -100,6 +131,10 @@ if [[ "$STAGE_JARS" -eq 1 ]]; then
   cp -f "$LIBS_DIR"/*.jar "$GAME_DIR/mods/"
   echo "    Staged: realgeology-${VERSION}.jar + libs/*.jar"
   echo
+fi
+
+if [[ "$ENABLE_SHADERS" -eq 1 ]]; then
+  stage_shader_mods
 fi
 
 if [[ "$DO_BUILD" -eq 1 ]]; then

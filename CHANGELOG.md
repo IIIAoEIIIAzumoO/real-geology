@@ -4,6 +4,12 @@
 
 Beta republish: **vanilla ore spawning** while custom deposits finish development.
 
+### Added
+
+- Debug worldgen mode `half_cut`: removes terrain and fluids on **X < 0**, keeping **X >= 0** for vertical cut-face screenshots
+- Fluid stripping in all active debug modes (`section`, `ores`, `half_cut`) — no flowing waterfalls off cut faces
+- Test instance `--shaders` flag: optional Sodium NeoForge + Iris NeoForge for publish QA screenshots (not in release JAR)
+
 ### Changed
 
 - Removed the biome modifier that stripped vanilla `minecraft:ore_*` placed features

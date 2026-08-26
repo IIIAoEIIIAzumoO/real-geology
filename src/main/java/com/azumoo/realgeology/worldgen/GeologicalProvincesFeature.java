@@ -203,12 +203,17 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
                     level.setBlock(pos, lavaPocket ? Blocks.LAVA.defaultBlockState() : Blocks.MAGMA_BLOCK.defaultBlockState(), 2);
                     continue;
                 }
+                if (debugMode.stripsFluidsAt(x, z) && isFluid(existing)) {
+                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                    continue;
+                }
                 // A section is an inspection cut, not an instruction to
                 // erase the lower crust. Keep the thermal base in the trench
                 // itself so its changing thickness is visible without mining
-                // into the side wall.
-                if (debugCutaway && debugMode == RealGeologyConfig.WorldgenDebugMode.SECTION) {
-                    if (y > minY && y <= thermalBaseTop) {
+                // into the side wall. Half-cut removes everything on X < 0.
+                if (debugCutaway && (debugMode == RealGeologyConfig.WorldgenDebugMode.SECTION
+                        || debugMode == RealGeologyConfig.WorldgenDebugMode.HALF_CUT)) {
+                    if (debugMode == RealGeologyConfig.WorldgenDebugMode.SECTION && y > minY && y <= thermalBaseTop) {
                         level.setBlock(pos, Blocks.MAGMA_BLOCK.defaultBlockState(), 2);
                     } else {
                         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
@@ -232,7 +237,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
                 // a young volcanic reservoir remains lava; its chamber rim,
                 // feeder and sills are solid intrusive rock.
                 BlockState liveMelt = column.magmatism().liveMeltAt(y);
-                if (liveMelt != null) {
+                if (liveMelt != null && !debugMode.stripsFluidsAt(x, z)) {
                     level.setBlock(pos, liveMelt, 2);
                     continue;
                 }
@@ -273,6 +278,10 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         if (b == Blocks.STONE || b == Blocks.DEEPSLATE || b == Blocks.GRANITE || b == Blocks.DIORITE || b == Blocks.ANDESITE || b == Blocks.TUFF
                 || b == Blocks.BLACKSTONE || b == Blocks.BASALT || b == Blocks.SMOOTH_BASALT) return true;
         return GameCompat.blockNamespace(b).equals("geostrata") && !GameCompat.blockPath(b).contains("_ore");
+    }
+
+    private static boolean isFluid(BlockState state) {
+        return state.getFluidState().isSource() || !state.getFluidState().isEmpty();
     }
     private static String volcanicReplacement(BlockState state, int y) {
         Block block = state.getBlock();

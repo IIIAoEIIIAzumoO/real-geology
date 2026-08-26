@@ -126,6 +126,17 @@ worldgen_mode = "ores"
 force_collision_belt = false
 ```
 
+### Half-world cut (screenshot composition)
+
+Single vertical cut face at **X = 0**: terrain and fluids on **X < 0** are removed; **X >= 0** keeps normal folded strata. Use a disposable world spawned near origin.
+
+```toml
+worldgen_mode = "half_cut"
+force_collision_belt = true
+```
+
+Stand on the positive-X side and look west along the cut plane for layer exposure. Fluids are stripped in the removed half and on the block adjacent to the cut face so waterfalls do not spill into the void.
+
 ## Simulating a Modrinth install (optional)
 
 Gradle dev always loads Real Geology from sources. To stage JARs like a player install:
@@ -135,6 +146,23 @@ Gradle dev always loads Real Geology from sources. To stage JARs like a player i
 ```
 
 Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Still launch with `runPublishTestClient` for NeoForge.
+
+## Screenshots / shaders
+
+Optional — **not** part of the published mod or Modrinth dependency list.
+
+NeoForge 1.21.1 uses **Sodium NeoForge + Iris NeoForge** (not Embeddium/Oculus). Your Modern Industry & Colonies pack already has compatible JARs.
+
+```bash
+./scripts/launch-test-instance.sh --shaders              # copy Iris + Sodium into run-publish-test/mods/
+ENABLE_SHADERS=1 ./scripts/launch-test-instance.sh       # same via env var
+```
+
+1. Launch with `--shaders` (copies from `MODPACK_MODS` or download from Modrinth).
+2. Drop a `.zip` shader pack into `run-publish-test/shaderpacks/`.
+3. In game: **Options → Video Settings → Shader Packs** → select pack.
+
+Shader mods load from `run-publish-test/mods/` only; they are never listed in `neoforge.mods.toml`.
 
 
 ## Dev vs publish debug policy

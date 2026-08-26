@@ -40,6 +40,15 @@ public final class VolcanicRockSanitizerFeature extends Feature<NoneFeatureConfi
                 }
                 continue;
             }
+            if (debugMode.isActive()) {
+                int top = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - 1;
+                for (int y = minY; y <= top; y++) {
+                    pos.set(x, y, z);
+                    if (debugMode.stripsFluidsAt(x, z) && isFluid(level.getBlockState(pos))) {
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
             int top = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z) - 1;
             for (int y = minY; y <= top; y++) {
                 pos.set(x, y, z);
@@ -54,5 +63,9 @@ public final class VolcanicRockSanitizerFeature extends Feature<NoneFeatureConfi
     private static boolean isOre(Block block) {
         String path = GameCompat.blockPath(block);
         return path.endsWith("_ore") || path.contains("_ore_");
+    }
+
+    private static boolean isFluid(net.minecraft.world.level.block.state.BlockState state) {
+        return state.getFluidState().isSource() || !state.getFluidState().isEmpty();
     }
 }

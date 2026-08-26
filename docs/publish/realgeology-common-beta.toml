@@ -11,6 +11,10 @@ force_collision_belt = false
 # worldgen_mode = "section"
 # force_collision_belt = true
 
+# Disposable screenshot QA — single vertical cut at X=0 (negative X removed).
+# worldgen_mode = "half_cut"
+# force_collision_belt = true
+
 [thermal_base]
 # Defaults are fine for beta; tweak only if testing asthenosphere boundary behavior.
 magma_thickness = 4

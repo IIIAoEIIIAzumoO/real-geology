@@ -158,6 +158,8 @@ creating a disposable test world:
   trenches every 512 m; it exposes new terrain from both directions as chunks generate.
 - `worldgen_mode = "ores"`: the same raster with every non-ore terrain
   block and fluid removed, leaving generated ore shapes visible.
+- `worldgen_mode = "half_cut"`: removes all terrain and fluids on **X < 0**,
+  keeping **X >= 0** for a single vertical cut-face screenshot at the origin plane.
 - `worldgen_mode = "off"`: normal generation.
 
 `force_collision_belt = true` is a disposable-test override that exposes the new structural transform everywhere. It must remain `false` in normal worlds.

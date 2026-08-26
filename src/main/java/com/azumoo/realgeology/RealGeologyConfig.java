@@ -19,10 +19,11 @@ public final class RealGeologyConfig {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         builder.push("debug");
         WORLDGEN_DEBUG_MODE = builder
-                .comment("off = normal generation; section = repeated 50 m geology cutaways; ores = repeated ore-only cutaways.",
-                        "Both modes make a full-height 50 m-wide corridor that continues as far as generated chunks do.",
+                .comment("off = normal generation; section = repeated 50 m geology cutaways; ores = repeated ore-only cutaways;",
+                        "half_cut = remove all terrain and fluids on X < 0, keeping X >= 0 for a single vertical cut-face screenshot.",
+                        "Section and ores modes make a full-height 50 m-wide corridor that continues as far as generated chunks do.",
                         "Use only for a newly created disposable test world. Worldgen debug changes are permanent in generated chunks.")
-                .defineInList("worldgen_mode", "off", List.of("off", "section", "ores"));
+                .defineInList("worldgen_mode", "off", List.of("off", "section", "ores", "half_cut"));
         FORCE_COLLISION_BELT = builder
                 .comment("For a disposable structural test only: treat all new Overworld terrain as a collision belt.",
                         "This makes the fold transform visible immediately. Leave false for normal terrain-guided generation.")
@@ -83,22 +84,35 @@ public final class RealGeologyConfig {
     }
 
     public enum WorldgenDebugMode {
-        OFF, SECTION, ORES;
+        OFF, SECTION, ORES, HALF_CUT;
 
         public static WorldgenDebugMode fromConfig(String value) {
             return switch (value) {
                 case "section" -> SECTION;
                 case "ores" -> ORES;
+                case "half_cut" -> HALF_CUT;
                 default -> OFF;
             };
         }
 
-        /** A two-direction, 50 m-wide inspection grid that continues with new chunks. */
+        public boolean isActive() {
+            return this != OFF;
+        }
+
+        /** Columns removed to air (and stripped of fluids) for debug inspection. */
         public boolean cutsAt(int x, int z) {
-            // A genuine raster: north/south and east/west trenches.  A fold
-            // can be nearly invisible along its hinge axis, so two directions
-            // are required for trustworthy structural inspection.
-            return this != OFF && (Math.floorMod(x + 25, 512) < 50 || Math.floorMod(z + 25, 512) < 50);
+            return switch (this) {
+                case OFF -> false;
+                case HALF_CUT -> x < 0;
+                case SECTION, ORES -> Math.floorMod(x + 25, 512) < 50 || Math.floorMod(z + 25, 512) < 50;
+            };
+        }
+
+        /** Columns where fluids should not remain — removed volume plus one block on the kept side. */
+        public boolean stripsFluidsAt(int x, int z) {
+            if (cutsAt(x, z)) return true;
+            if (!isActive()) return false;
+            return cutsAt(x - 1, z) || cutsAt(x + 1, z) || cutsAt(x, z - 1) || cutsAt(x, z + 1);
         }
     }
 }
