@@ -17,6 +17,7 @@ usage() {
 Usage: ./scripts/launch-test-instance.sh [client|server] [options]
 
 Options:
+  --server        Launch dedicated server (same as positional "server")
   --no-build      Skip ./gradlew build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
   --help          Show this help
@@ -29,6 +30,7 @@ USAGE
 while [[ $# -gt 0 ]]; do
   case "$1" in
     client|server) MODE="$1"; shift ;;
+    --server) MODE="server"; shift ;;
     --no-build) DO_BUILD=0; shift ;;
     --stage-jars) STAGE_JARS=1; shift ;;
     --help|-h) usage; exit 0 ;;
@@ -60,6 +62,20 @@ ensure_lib() {
   echo "Copied $(basename "$src") -> libs/"
 }
 
+verify_libs() {
+  local missing=0
+  for pattern in "geostrata-*-NEOFORGE.jar" "architectury-*-neoforge.jar"; do
+    if ! compgen -G "$LIBS_DIR/$pattern" > /dev/null; then
+      echo "Missing libs/$pattern (required for localRuntime)" >&2
+      missing=1
+    fi
+  done
+  if [[ "$missing" -ne 0 ]]; then
+    exit 1
+  fi
+  echo "==> Verified libs/*.jar (GeoStrata + Architectury)"
+}
+
 echo "==> Real Geology beta test instance"
 echo "    Version:  $VERSION"
 echo "    Game dir: $GAME_DIR"
@@ -68,6 +84,8 @@ echo
 
 ensure_lib "GeoStrata" "geostrata-*-NEOFORGE.jar"
 ensure_lib "Architectury" "architectury-*-neoforge.jar"
+verify_libs
+echo
 
 if [[ "$STAGE_JARS" -eq 1 ]]; then
   echo "==> Staging JARs into run-publish-test/mods/"
@@ -90,9 +108,9 @@ if [[ "$DO_BUILD" -eq 1 ]]; then
   echo
 fi
 
-TASK="runPublishClient"
+TASK="runPublishTestClient"
 if [[ "$MODE" == "server" ]]; then
-  TASK="runPublishServer"
+  TASK="runPublishTestServer"
 fi
 
 echo "==> Launching Gradle $TASK (NeoForge dev)"

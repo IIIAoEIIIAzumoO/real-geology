@@ -16,6 +16,8 @@ Check `gradle.properties` (`mod_version`). As of setup: **0.21.0-beta.2** — va
 
 Legacy dev folder `run-geology-minimal/` remains for older structural tests; **use `run-publish-test/` for publish beta QA.**
 
+Gradle run configs: `publishTestClient` / `publishTestServer` → tasks `runPublishTestClient` / `runPublishTestServer`.
+
 ## Exact mod list (runtime)
 
 | Mod | Source |
@@ -24,6 +26,8 @@ Legacy dev folder `run-geology-minimal/` remains for older structural tests; **u
 | Real Geology `0.21.0-beta.2` (or current `mod_version`) | Project `sourceSets.main` |
 | GeoStrata `1.2.0-1.21.1-NEOFORGE` | `libs/geostrata-1.2.0-1.21.1-NEOFORGE.jar` |
 | Architectury `13.0.11-neoforge` | `libs/architectury-13.0.11-neoforge.jar` |
+
+Only `localRuntime` deps from `libs/` are added — no other modpack mods.
 
 ## One-time: GeoStrata JARs in `libs/`
 
@@ -37,7 +41,7 @@ Expected filenames (see `libs/README.md`):
 - `geostrata-1.2.0-1.21.1-NEOFORGE.jar`
 - `architectury-13.0.11-neoforge.jar`
 
-`./scripts/launch-test-instance.sh` can copy these automatically when `MODPACK_MODS` points at that folder.
+`./scripts/launch-test-instance.sh` copies these from `MODPACK_MODS` when `libs/` is empty, then verifies both JARs exist.
 
 ## Launch commands
 
@@ -45,17 +49,17 @@ Expected filenames (see `libs/README.md`):
 
 ```bash
 cd minecraft-givekit-project/geology-overhaul
-./scripts/launch-test-instance.sh client    # default
-./scripts/launch-test-instance.sh server
-./scripts/launch-test-instance.sh client --no-build   # skip compile
+./scripts/launch-test-instance.sh              # client (default)
+./scripts/launch-test-instance.sh --server     # dedicated server
+./scripts/launch-test-instance.sh client --no-build
 ```
 
 ### Gradle directly
 
 ```bash
 ./gradlew build
-./gradlew runPublishClient
-./gradlew runPublishServer
+./gradlew runPublishTestClient
+./gradlew runPublishTestServer
 ```
 
 Other Gradle runs (different game dirs):
@@ -63,26 +67,56 @@ Other Gradle runs (different game dirs):
 - `runClient` — default NeoForge `run/` (may include unrelated mods if present)
 - `runServer` / `runGeologyPreview` — `run-geology-minimal/`
 
-## New world checklist
+## New world only
 
-1. **New world only** — existing chunks are not rewritten.
-2. Optional: apply beta config from `docs/publish/realgeology-common-beta.toml` into `run-publish-test/config/realgeology-common.toml` before first world creation.
-3. Create a single-player world (client) or start server and create world via usual flow.
-4. Suggested world name: `beta-vanilla-ores-<version>` for beta.2 ore verification.
-5. Verify: folded strata in caves/surface, GeoStrata rock types, **vanilla** iron/coal/etc. ore generation (beta.2).
-6. Debug: `/realgeology debug` (see mod docs). For section corridors, set `worldgen_mode = "section"` only on a disposable world.
+Real Geology changes apply only to **newly generated chunks**. Do not expect retroactive fixes in an old save.
+
+1. Use a disposable world for each config mode you test.
+2. Copy config into `run-publish-test/config/realgeology-common.toml` **before** first world creation (or edit after first launch and restart).
+3. Suggested world names: `beta-vanilla-ores-<version>` (normal play) or `beta-fold-debug-<version>` (section mode).
+
+## Recommended `realgeology-common.toml`
+
+Full template: `docs/publish/realgeology-common-beta.toml`.
+
+### Normal beta play (vanilla ores + strata)
+
+```toml
+[debug]
+worldgen_mode = "off"
+force_collision_belt = false
+```
+
+Verify folded strata in caves/cliffs, GeoStrata rock types, and **vanilla** iron/coal/etc. ore generation (beta.2).
+
+### Fold inspection (disposable world)
+
+Permanent 50 m debug corridors in **new** chunks — do not use on a world you want to keep.
+
+```toml
+[debug]
+worldgen_mode = "section"
+force_collision_belt = true
+```
+
+Fly into air trenches at Y ~64 to read fold geometry. For ore-shape QA only (not beta.2 vanilla ore check):
+
+```toml
+worldgen_mode = "ores"
+force_collision_belt = false
+```
 
 ## Simulating a Modrinth install (optional)
 
-Gradle dev always loads Real Geology from sources. To stage JARs like a player install (e.g. inspect `mods/`):
+Gradle dev always loads Real Geology from sources. To stage JARs like a player install:
 
 ```bash
 ./scripts/launch-test-instance.sh --stage-jars
 ```
 
-This copies the built `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Still launch with `runPublishClient` for NeoForge; for a **standalone** `.minecraft` instance you must install NeoForge separately (not covered here).
+Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Still launch with `runPublishTestClient` for NeoForge.
 
 ## Git
 
-- `run-publish-test/*` worlds and logs are ignored.
+- `run-publish-test/*` worlds and logs are ignored; `run-publish-test/README.md` is tracked.
 - Do not commit `libs/*.jar` (already in `.gitignore`).

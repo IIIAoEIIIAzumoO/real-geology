@@ -1,8 +1,9 @@
 # run-publish-test
 
-Gradle NeoForge **dev** game directory for isolated Real Geology beta testing.
+Isolated NeoForge game directory for **pre-publish beta QA** (Real Geology + GeoStrata + Architectury only).
 
-- **Not** your full modpack — only Real Geology (from project sources), GeoStrata, and Architectury via `libs/` + `localRuntime`.
-- World saves, logs, and generated configs here are gitignored (except this file).
+- Worlds, logs, and local config live here; they are **gitignored** except this README.
+- Launch via `./scripts/launch-test-instance.sh` or `./gradlew runPublishTestClient`.
+- See [TEST-INSTANCE.md](../TEST-INSTANCE.md) for mod list, config snippets, and the **new world only** warning.
 
-Launch via `./scripts/launch-test-instance.sh` or see `TEST-INSTANCE.md` in the project root.
+Copy `docs/publish/realgeology-common-beta.toml` to `config/realgeology-common.toml` before your first world if you want the recommended beta defaults.
