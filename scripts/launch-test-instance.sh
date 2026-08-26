@@ -12,6 +12,7 @@ MODE="client"
 DO_BUILD=1
 STAGE_JARS=0
 ENABLE_SHADERS="${ENABLE_SHADERS:-0}"
+DRY_RUN=0
 
 usage() {
   cat <<'USAGE'
@@ -21,7 +22,8 @@ Options:
   --server        Launch dedicated server (same as positional "server")
   --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
-  --shaders       Copy Iris + Sodium NeoForge from MODPACK_MODS into run-publish-test/mods/
+  --shaders       Copy shader stack JARs from MODPACK_MODS into run-publish-test/mods/
+  --dry-run       With --shaders: list JARs that would be copied; do not build or launch
   --help          Show this help
 
 Environment:
@@ -37,6 +39,7 @@ while [[ $# -gt 0 ]]; do
     --no-build) DO_BUILD=0; shift ;;
     --stage-jars) STAGE_JARS=1; shift ;;
     --shaders) ENABLE_SHADERS=1; shift ;;
+    --dry-run) DRY_RUN=1; shift ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -66,30 +69,59 @@ ensure_lib() {
   echo "Copied $(basename "$src") -> libs/"
 }
 
-copy_optional_mod() {
-  local pattern="$1"
-  local label="$2"
+copy_optional_mod_patterns() {
+  local label="$1"
+  shift
+  local patterns=("$@")
   if [[ ! -d "$MODPACK_MODS" ]]; then
     echo "    Skipped $label — MODPACK_MODS not found: $MODPACK_MODS" >&2
     return 1
   fi
-  local src
-  src="$(find "$MODPACK_MODS" -maxdepth 1 -name "$pattern" -print -quit)"
-  if [[ -z "$src" ]]; then
-    echo "    Skipped $label — no $pattern in $MODPACK_MODS" >&2
-    return 1
-  fi
-  mkdir -p "$GAME_DIR/mods"
-  cp -f "$src" "$GAME_DIR/mods/"
-  echo "    Staged shader mod: $(basename "$src")"
+  local pattern src
+  for pattern in "${patterns[@]}"; do
+    src="$(find "$MODPACK_MODS" -maxdepth 1 -name "$pattern" -print -quit)"
+    if [[ -n "$src" ]]; then
+      if [[ "$DRY_RUN" -eq 1 ]]; then
+        echo "    Would stage shader mod: $(basename "$src")"
+      else
+        mkdir -p "$GAME_DIR/mods"
+        cp -f "$src" "$GAME_DIR/mods/"
+        echo "    Staged shader mod: $(basename "$src")"
+      fi
+      return 0
+    fi
+  done
+  echo "    Skipped $label — none of: ${patterns[*]} in $MODPACK_MODS" >&2
+  return 1
 }
 
 stage_shader_mods() {
   echo "==> Staging screenshot shader mods (test instance only — not in release JAR)"
-  copy_optional_mod "sodium-neoforge-*-mc1.21.1.jar" "Sodium NeoForge"
-  copy_optional_mod "iris-neoforge-*-mc1.21.1.jar" "Iris NeoForge"
-  echo "    NeoForge 1.21.1 stack: Sodium + Iris (from MODPACK_MODS or download from Modrinth)"
-  echo "    Place a shader pack in run-publish-test/shaderpacks/ and enable in Video Settings."
+  local staged=0
+  # Sodium + Iris (NeoForge 1.21.1). Pack filenames may use + or URL-encoded %2B before mc1.21.1.
+  copy_optional_mod_patterns "Sodium NeoForge" \
+    "sodium-neoforge-*mc1.21.1*.jar" \
+    "sodium-neoforge-*-mc1.21.1.jar" \
+    "sodium-neoforge-*.jar" && staged=1 || true
+  copy_optional_mod_patterns "Iris NeoForge" \
+    "iris-neoforge-*mc1.21.1*.jar" \
+    "iris-neoforge-*-mc1.21.1.jar" \
+    "iris-neoforge-*.jar" && staged=1 || true
+  # Embeddium + Oculus (alternate stack; not in Modern Industry & Colonies)
+  copy_optional_mod_patterns "Embeddium NeoForge" \
+    "embeddium-*-neoforge*.jar" \
+    "embeddium-neoforge-*.jar" \
+    "embeddium-*.jar" && staged=1 || true
+  copy_optional_mod_patterns "Oculus NeoForge" \
+    "oculus-*-neoforge*.jar" \
+    "oculus-neoforge-*.jar" \
+    "oculus-*.jar" && staged=1 || true
+  if [[ "$staged" -eq 0 ]]; then
+    echo "    No shader renderer JARs found — continuing without shaders (optional)." >&2
+  else
+    echo "    Shader stack: Sodium+Iris and/or Embeddium+Oculus (from MODPACK_MODS or Modrinth)."
+    echo "    Place a shader pack in run-publish-test/shaderpacks/ and enable in Video Settings."
+  fi
   echo
 }
 
@@ -135,6 +167,11 @@ fi
 
 if [[ "$ENABLE_SHADERS" -eq 1 ]]; then
   stage_shader_mods
+fi
+
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "==> Dry run complete (no build, no launch)"
+  exit 0
 fi
 
 if [[ "$DO_BUILD" -eq 1 ]]; then

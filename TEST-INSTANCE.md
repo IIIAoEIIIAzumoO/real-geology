@@ -151,6 +151,20 @@ Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Stil
 
 Optional — **not** part of the published mod or Modrinth dependency list.
 
+### Shader JARs in Modern Industry & Colonies (`MODPACK_MODS`)
+
+Observed in `~/.minecraft/versions/Modern Industry & Colonies/mods/` (NeoForge 1.21.1):
+
+| JAR | Role |
+|-----|------|
+| `sodium-neoforge-0.8.13-beta.2%2Bmc1.21.1.jar` | Sodium (note `%2B` instead of `+` in filename) |
+| `iris-neoforge-1.8.14-beta.1+mc1.21.1.jar` | Iris |
+| `entityculling-neoforge-1.10.5-mc1.21.1.jar` | Optional perf (not copied by `--shaders`) |
+
+No Embeddium/Oculus in this pack — script still tries those patterns for other installs.
+
+`--shaders` globs: `*mc1.21.1*` for Sodium/Iris (handles `+` and `%2B`). Missing shader JARs are **optional**; launch continues.
+
 NeoForge 1.21.1 uses **Sodium NeoForge + Iris NeoForge** (not Embeddium/Oculus). Your Modern Industry & Colonies pack already has compatible JARs.
 
 ```bash
