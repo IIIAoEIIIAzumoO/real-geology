@@ -1,0 +1,18 @@
+# Recommended realgeology-common.toml settings for 0.21.0-beta publish testing.
+# Copy into run-publish-test/config/realgeology-common.toml before creating a NEW world,
+# or edit the generated file after first launch (then restart for some options).
+
+[debug]
+# Normal beta play: vanilla terrain + folded strata + vanilla ore features (beta.2).
+worldgen_mode = "off"
+force_collision_belt = false
+
+# Disposable structural QA only — creates permanent 50 m debug corridors in NEW chunks.
+# worldgen_mode = "section"
+# force_collision_belt = true
+
+[thermal_base]
+# Defaults are fine for beta; tweak only if testing asthenosphere boundary behavior.
+magma_thickness = 4
+lava_pocket_chance = 0.055
+variable_tectonic_base = false

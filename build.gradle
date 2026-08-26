@@ -60,6 +60,19 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
+
+        publishTestClient {
+            client()
+            gameDirectory = project.file('run-publish-test')
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        publishTestServer {
+            server()
+            programArgument '--nogui'
+            gameDirectory = project.file('run-publish-test')
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
         server {
             server()
             programArgument '--nogui'

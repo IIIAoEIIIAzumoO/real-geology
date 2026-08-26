@@ -9,7 +9,7 @@ cd minecraft-givekit-project/geology-overhaul
 ./scripts/first-publish.sh
 ```
 
-That logs you into GitHub (browser), creates `AzumoO/real-geology`, pushes the code, and uploads `v0.21.0-beta.1` with the JAR.
+That logs you into GitHub (browser), creates `AzumoO/real-geology`, pushes the code, and uploads `v0.21.0-beta.2` with the JAR.
 
 Then follow [MODRINTH-SETUP.md](MODRINTH-SETUP.md) for the Modrinth page (where testers actually download mods).
 
@@ -44,7 +44,7 @@ Suggested first commit message: `Real Geology 0.21.0-beta — folded strata worl
 
 ## 3. Version string
 
-Beta releases should use semver pre-release tags, e.g. `0.21.0-beta.1`, not internal branch names like `fault-wedges-curved-asthenosphere`.
+Beta releases should use semver pre-release tags, e.g. `0.21.0-beta.2`, not internal branch names like `fault-wedges-curved-asthenosphere`.
 
 Update `mod_version` in `gradle.properties`, then:
 
@@ -82,7 +82,7 @@ Attach the same JAR plus:
 - `build/cross-sections/*.svg` (fold inspection screenshots)
 - Link to [MATERIAL-CATALOG.md](MATERIAL-CATALOG.md)
 
-Tag: `v0.21.0-beta.1`
+Tag: `v0.21.0-beta.2`
 
 ## 6. Community hooks
 

@@ -9,8 +9,8 @@ export PATH="${HOME}/.local/bin:${PATH}"
 
 GITHUB_USER="${GITHUB_USER:-AzumoO}"
 REPO_NAME="${REPO_NAME:-real-geology}"
-TAG="v0.21.0-beta.1"
 VERSION="$(grep '^mod_version=' gradle.properties | cut -d= -f2)"
+TAG="v${VERSION}"
 
 echo "==> Real Geology first publish"
 echo "    GitHub: ${GITHUB_USER}/${REPO_NAME}"

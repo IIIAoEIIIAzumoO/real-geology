@@ -10,7 +10,7 @@ body:
     id: version
     attributes:
       label: Real Geology version
-      placeholder: "0.21.0-beta.1"
+      placeholder: "0.21.0-beta.2"
     validations:
       required: true
   - type: input

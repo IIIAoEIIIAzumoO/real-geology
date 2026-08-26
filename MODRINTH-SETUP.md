@@ -30,15 +30,15 @@ Required:
 - GeoStrata 1.2+ — install from CurseForge until it appears on Modrinth
 ```
 
-## 3. Upload version 0.21.0-beta.1
+## 3. Upload version 0.21.0-beta.2
 
 1. Project → Versions → Create version
-2. **Version number:** `0.21.0-beta.1`
+2. **Version number:** `0.21.0-beta.2`
 3. **Name:** Folded strata beta
 4. **Channel:** Beta
 5. **Loaders:** NeoForge
 6. **Game versions:** 1.21.1
-7. **File:** `build/libs/realgeology-0.21.0-beta.1.jar`
+7. **File:** `build/libs/realgeology-0.21.0-beta.2.jar`
 8. **Changelog:** paste `CHANGELOG.md`
 
 ## 4. Gallery (recommended)

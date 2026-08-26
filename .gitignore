@@ -47,3 +47,7 @@ libs/*.jar
 
 ### Release artifacts (attach via GitHub/Modrinth releases) ###
 dist/
+# Isolated beta publish test instance (NeoForge dev game dir)
+run-publish-test/*
+!run-publish-test/README.md
+
