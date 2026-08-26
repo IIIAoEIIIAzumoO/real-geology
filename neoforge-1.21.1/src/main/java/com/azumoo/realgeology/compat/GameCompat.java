@@ -25,6 +25,10 @@ public final class GameCompat {
         return level.getMinBuildHeight();
     }
 
+    public static int maxY(LevelHeightAccessor level) {
+        return level.getMaxBuildHeight() - 1;
+    }
+
     public static ResourceLocation id(String value) {
         return ResourceLocation.parse(value);
     }

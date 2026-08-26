@@ -9,6 +9,7 @@ public final class RealGeologyConfig {
     public static final ModConfigSpec SPEC;
     private static final ModConfigSpec.ConfigValue<String> WORLDGEN_DEBUG_MODE;
     private static final ModConfigSpec.BooleanValue FORCE_COLLISION_BELT;
+    private static final ModConfigSpec.BooleanValue SPAWN_HIGHLAND_NEAR_CUT;
     private static final ModConfigSpec.IntValue THERMAL_BASE_MAGMA_THICKNESS;
     private static final ModConfigSpec.DoubleValue THERMAL_BASE_LAVA_POCKET_CHANCE;
     private static final ModConfigSpec.BooleanValue VARIABLE_TECTONIC_BASE;
@@ -28,6 +29,11 @@ public final class RealGeologyConfig {
                 .comment("For a disposable structural test only: treat all new Overworld terrain as a collision belt.",
                         "This makes the fold transform visible immediately. Leave false for normal terrain-guided generation.")
                 .define("force_collision_belt", false);
+        SPAWN_HIGHLAND_NEAR_CUT = builder
+                .comment("When worldgen_mode is half_cut or section, relocate world spawn to elevated continental land",
+                        "on the kept side of the cut (positive X for half_cut), facing west toward the cut plane.",
+                        "Uses vanilla elevation and biome heuristics when Terralith is absent.")
+                .define("spawn_highland_near_cut", true);
         builder.pop();
         builder.push("thermal_base");
         THERMAL_BASE_MAGMA_THICKNESS = builder
@@ -61,6 +67,17 @@ public final class RealGeologyConfig {
 
     public static boolean forceCollisionBelt() {
         return FORCE_COLLISION_BELT.get();
+    }
+
+    public static boolean spawnHighlandNearCut() {
+        return SPAWN_HIGHLAND_NEAR_CUT.get();
+    }
+
+    /** True when debug cutaway modes should place spawn on highland near the cut plane. */
+    public static boolean shouldRelocateSpawnNearCut() {
+        if (!spawnHighlandNearCut()) return false;
+        WorldgenDebugMode mode = worldgenDebugMode();
+        return mode == WorldgenDebugMode.HALF_CUT || mode == WorldgenDebugMode.SECTION;
     }
 
     public static int thermalBaseMagmaThickness() {

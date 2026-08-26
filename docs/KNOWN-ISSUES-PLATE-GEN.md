@@ -89,6 +89,17 @@ generation model and [ROADMAP.md](../ROADMAP.md) for planned work.
 
 ---
 
+## 7. Fault / crack offset layer doubling (Aug 2026 playtest)
+
+| Field | Detail |
+|---|---|
+| **Symptom** | When the generator offsets terrain to display a crack or fault, it appears to **insert new geological layers** rather than deform existing beds. When a section is pushed up, layers appear added **below**; when pushed down, layers appear added **above**. The pushing block seems to **duplicate the layer above or below the fault** instead of displacing the same stratigraphy. |
+| **Expected behavior** | Proper **deformation** — the same beds bent or displaced across the fault plane — not partial **doubling** of stratigraphy. |
+| **Suspected cause** | Crack/fault offset logic in `GeologicalProvincesFeature` (`structuralTransform()`, `sedimentaryFault()`, fold/fault sampling) may sample source coordinates on the wrong side of the discontinuity, effectively re-inserting adjacent beds at the fault instead of applying true displacement. |
+| **Priority** | **P1** — visible in debug cutaways and section views; undermines structural realism. |
+
+---
+
 ## Related code anchors
 
 ```408:418:src/main/java/com/azumoo/realgeology/worldgen/GeologicalProvincesFeature.java

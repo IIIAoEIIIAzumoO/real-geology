@@ -29,7 +29,7 @@ public final class DebugCutawaySanitizer {
         RealGeologyConfig.WorldgenDebugMode mode = RealGeologyConfig.worldgenDebugMode();
         if (!mode.isActive()) return;
         int minY = GameCompat.minY(level);
-        int maxY = level.getMaxBuildHeight() - 1;
+        int maxY = GameCompat.maxY(level);
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {

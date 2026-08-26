@@ -25,6 +25,10 @@ public final class GameCompat {
         return level.getMinY();
     }
 
+    public static int maxY(LevelHeightAccessor level) {
+        return level.getMaxY();
+    }
+
     public static Identifier id(String value) {
         return Identifier.parse(value);
     }
