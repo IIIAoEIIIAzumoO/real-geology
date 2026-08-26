@@ -1,6 +1,19 @@
 # Real Geology
 
-**NeoForge 1.21.1 · beta**
+**NeoForge · beta**
+
+Real Geology replaces generic underground stone with seed-stable geological provinces: folded sedimentary strata, metamorphic mountain belts, plutons, volcanic arcs, faults, and deposit shapes that behave like real geology rather than a repeating block list.
+
+## Supported versions
+
+| Minecraft | NeoForge | Status | GeoStrata | Artifact |
+|-----------|----------|--------|-----------|----------|
+| **1.21.1** | 21.1.x | **Supported beta** | Required | `neoforge-1.21.1/build/libs/realgeology-0.21.0-beta.2.jar` |
+| **26.2** | 26.2.x | **Experimental compile** | Not available — vanilla rock fallback | `neoforge-26.2/build/libs/realgeology-26.2-0.21.0-beta.2.jar` |
+
+See [PORTING-26.md](PORTING-26.md) for the 26.2 port status, blockers, and build commands.
+
+**NeoForge 1.21.1 · beta** (primary release target)
 
 Real Geology replaces generic underground stone with seed-stable geological provinces: folded sedimentary strata, metamorphic mountain belts, plutons, volcanic arcs, faults, and deposit shapes that behave like real geology rather than a repeating block list.
 
@@ -70,14 +83,20 @@ Export SVG cross-sections from Gradle:
 ## Building from source
 
 ```bash
-# Place GeoStrata (+ Architectury) JARs in libs/ — see libs/README.md
+# 1.21.1 (primary) — place GeoStrata (+ Architectury) JARs in libs/ — see libs/README.md
+./gradlew :neoforge-1.21.1:build
+
+# 26.2 (experimental) — requires JDK 25; no GeoStrata yet
+./gradlew :neoforge-26.2:build
+
+# Both targets
 ./gradlew build
 ```
 
-Dev server with GeoStrata:
+Dev server with GeoStrata (1.21.1):
 
 ```bash
-./gradlew runServer
+./gradlew :neoforge-1.21.1:runServer
 ```
 
 Contributors: read [CONTRIBUTING.md](CONTRIBUTING.md). Release maintainers: [PUBLISHING.md](PUBLISHING.md).

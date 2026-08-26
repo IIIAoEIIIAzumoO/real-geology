@@ -21,7 +21,7 @@ Requirements:
 #   architectury-13.0.11-neoforge.jar  (GeoStrata dependency)
 
 ./gradlew build
-./gradlew runServer          # minimal GeoStrata integration test
+./gradlew :neoforge-1.21.1:runServer          # minimal GeoStrata integration test
 ./gradlew runGeologyPreview  # exports SVG cross-sections to build/cross-sections/
 ```
 
