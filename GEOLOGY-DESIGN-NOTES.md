@@ -92,6 +92,13 @@ The staged package is `dist/Real-Geology-1.21.1-Thermal-Base-Test-0.11.0.zip`.
 It must be tested in a **brand-new world**; generation never rewrite existing
 chunks.
 
+## Beta playtest known issues (Aug 2026)
+
+Structured feedback from in-world plate/province generation playtesting:
+[docs/KNOWN-ISSUES-PLATE-GEN.md](docs/KNOWN-ISSUES-PLATE-GEN.md). Covers biome
+boundary discontinuities, coast/highland fold and interbed gaps, global fold
+amplitude, and open questions on Terralith terrain-tag coupling.
+
 ## Next design pass: couple geology to the real terrain/climate
 
 Real Geology currently determines provinces independently. It should query

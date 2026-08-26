@@ -13,6 +13,15 @@ This document is the public backlog. Items are ordered roughly by dependency and
 - Debug section/ore raster modes and `/realgeology debug` commands
 - **Vanilla ore spawning** for beta testers (custom deposits deferred)
 
+## Known issues from Aug 2026 playtest
+
+Documented in [docs/KNOWN-ISSUES-PLATE-GEN.md](docs/KNOWN-ISSUES-PLATE-GEN.md):
+
+- Hard cuts at biome/`TerrainSetting` boundaries (province/column/transform switch with no blend)
+- Coast and some high terrain missing expected folds and interbed “pancake” readability
+- Global fold amplitude and softer-bed competence contrast may be too weak
+- Verify Terralith terrain classes actually map to `GeologicalProvincesFeature.environment()` as players expect
+
 ## Next — custom ore deposits
 
 Goal: re-enable Real Geology's deposit-specific shapes with host-aware ore blocks and mineral-accurate names.
