@@ -1,6 +1,7 @@
 package com.azumoo.realgeology.worldgen;
 
 import com.azumoo.realgeology.RealGeology;
+import com.azumoo.realgeology.compat.GameCompat;
 import com.azumoo.realgeology.RealGeologyConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +19,7 @@ public final class TestWorldLandSpawn {
     public static void chooseLandSpawn(ServerStartedEvent event) {
         if (!RealGeologyConfig.forceCollisionBelt()) return;
         ServerLevel level = event.getServer().overworld();
-        BlockPos current = level.getSharedSpawnPos();
+        BlockPos current = GameCompat.sharedSpawnPos(level);
         if (isUsableLand(level, current.getX(), current.getZ())) return;
 
         for (int radius = 0; radius <= MAX_RADIUS; radius += STEP) {
@@ -29,7 +30,7 @@ public final class TestWorldLandSpawn {
                         -radius, offset,
                         radius, offset);
                 if (found != null) {
-                    level.setDefaultSpawnPos(found, 0f);
+                    GameCompat.setSharedSpawn(level, found, 0f);
                     RealGeology.LOGGER.info("Real Geology fold test moved ocean spawn to dry land at {}, {}, {}",
                             found.getX(), found.getY(), found.getZ());
                     return;

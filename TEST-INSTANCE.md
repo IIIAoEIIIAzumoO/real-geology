@@ -116,6 +116,18 @@ Gradle dev always loads Real Geology from sources. To stage JARs like a player i
 
 Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Still launch with `runPublishTestClient` for NeoForge.
 
+
+## Dev vs publish debug policy
+
+| Setting | Shipped mod default (`RealGeologyConfig.java`) | Modrinth / release JAR |
+|---------|-----------------------------------------------|-------------------------|
+| `debug.worldgen_mode` | `"off"` | Same — NeoForge generates `config/realgeology-common.toml` from code defaults on first run |
+| `debug.force_collision_belt` | `false` | Same |
+
+- **Worldgen debug** (`section` / `ores`) is **config-only**: no separate debug artifact; players opt in by editing `realgeology-common.toml` before creating a disposable world.
+- **`/realgeology debug …` commands** ship in the release JAR but require operator permission (level 2). They are temporary in-world cutaways (restored on Save & Quit), independent of `worldgen_mode`. Safe for publish: defaults keep automatic section corridors **off**.
+- **This test instance** may pre-seed `run-publish-test/config/realgeology-common.toml` with `worldgen_mode = "section"` for layer QA — do **not** copy that file into publish docs; use `docs/publish/realgeology-common-beta.toml` (`worldgen_mode = "off"`) for tester handoff.
+
 ## Git
 
 - `run-publish-test/*` worlds and logs are ignored; `run-publish-test/README.md` is tracked.

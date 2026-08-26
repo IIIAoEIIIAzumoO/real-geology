@@ -1,0 +1,139 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.1.38'
+    id 'idea'
+}
+
+def root = rootProject.projectDir
+
+version = mod_version
+group = mod_group_id
+
+sourceSets.main.resources {
+    srcDir("${root}/src/generated/resources")
+    exclude("**/*.bbmodel")
+    exclude("src/generated/**/.cache")
+}
+
+sourceSets.main.java {
+    srcDir("${root}/src/main/java")
+    srcDir("src/main/java")
+}
+
+sourceSets.main.resources {
+    srcDirs("${root}/src/main/resources")
+}
+
+repositories {}
+
+base {
+    archivesName = "${mod_id}-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        workingDirectory project.layout.projectDirectory.dir('run').dir(name)
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        argument '--nogui'
+    }
+    gameTestServer {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
+    // GeoStrata 26.2 JAR not published — optional localRuntime for integration testing when available.
+    fileTree(dir: "${root}/libs-26.2", include: ['*.jar']).each { jar ->
+        localRuntime files(jar)
+    }
+}
+
+static String geostrataDependencyBlock(String type) {
+    if (type == 'none') {
+        return '# GeoStrata not published for 26.2 — vanilla stone fallback at runtime.'
+    }
+    return """[[dependencies.\${mod_id}]]
+    modId="geostrata"
+    type="${type}"
+    reason="Real Geology arranges GeoStrata's named rocks and compatible ore blocks into geological formations."
+    versionRange="[1.2.0,)"
+    ordering="AFTER"
+    side="BOTH"
+"""
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            geostrata_dependency_block: geostrataDependencyBlock('none'),
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    from("${root}/src/main/templates/META-INF/neoforge.mods.toml") {
+        into 'META-INF'
+        expand(
+                minecraft_version: minecraft_version,
+                minecraft_version_range: minecraft_version_range,
+                neo_version: neo_version,
+                loader_version_range: loader_version_range,
+                mod_id: mod_id,
+                mod_name: mod_name,
+                mod_license: mod_license,
+                mod_version: mod_version,
+                geostrata_dependency_block: geostrataDependencyBlock('none')
+        )
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/repo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

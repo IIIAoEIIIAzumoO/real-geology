@@ -1,13 +1,11 @@
 package com.azumoo.realgeology.debug;
 
-import com.azumoo.realgeology.worldgen.GeologicalProvincesFeature;
+import com.azumoo.realgeology.compat.GameCompat;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
@@ -44,8 +42,7 @@ public final class GeologyDebugCommands {
     private GeologyDebugCommands() { }
 
     public static void register(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("realgeology")
-                .requires(source -> source.hasPermission(2))
+        event.getDispatcher().register(GameCompat.requiresOperator(Commands.literal("realgeology"))
                 .then(Commands.literal("debug")
                         .then(Commands.literal("section")
                                 .executes(context -> makeSection(context.getSource(), DEFAULT_WIDTH, false))
@@ -83,7 +80,7 @@ public final class GeologyDebugCommands {
 
     private static int makeSection(CommandSourceStack source, int width, boolean oreOnly) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
         ServerPlayer player = source.getPlayerOrException();
-        ServerLevel level = player.serverLevel();
+        ServerLevel level = source.getLevel();
         BlockPos playerPos = player.blockPosition();
         int normalX = player.getDirection().getStepX();
         int normalZ = player.getDirection().getStepZ();
@@ -121,13 +118,12 @@ public final class GeologyDebugCommands {
                 || block == Blocks.SMOOTH_BASALT || block == Blocks.DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.COARSE_DIRT
                 || block == Blocks.ROOTED_DIRT || block == Blocks.GRAVEL || block == Blocks.SAND || block == Blocks.RED_SAND
                 || block == Blocks.TERRACOTTA || block == Blocks.SANDSTONE || block == Blocks.RED_SANDSTONE) return true;
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-        return id.getNamespace().equals("geostrata") && !isOre(state);
+        return GameCompat.blockNamespace(block).equals("geostrata") && !isOre(state);
     }
 
     private static boolean isOre(BlockState state) {
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
-        return id.getPath().endsWith("_ore") || id.getPath().contains("_ore_");
+        String path = GameCompat.blockPath(state);
+        return path.endsWith("_ore") || path.contains("_ore_");
     }
 
     /** Stateful cursor: scans a full trench incrementally, never in one tick. */
@@ -154,7 +150,7 @@ public final class GeologyDebugCommands {
             this.oreOnly = oreOnly;
             this.originals = ORIGINALS.computeIfAbsent(level, ignored -> new LinkedHashMap<>());
             this.lateral = -width / 2;
-            this.y = level.getMinBuildHeight();
+            this.y = GameCompat.minY(level);
         }
 
         private int process(int budget) {
@@ -175,7 +171,7 @@ public final class GeologyDebugCommands {
                     examined++;
                     continue;
                 }
-                y = level.getMinBuildHeight();
+                y = GameCompat.minY(level);
                 if (++inward >= TRENCH_DEPTH) {
                     inward = 0;
                     if (++lateral >= (width + 1) / 2) complete = true;

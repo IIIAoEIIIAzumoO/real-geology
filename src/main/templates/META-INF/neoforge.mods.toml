@@ -88,13 +88,7 @@ Beta world generator: seed-stable geological provinces with folded strata, fault
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
-    modId="geostrata"
-    type="required"
-    reason="Real Geology arranges GeoStrata's named rocks and compatible ore blocks into geological formations."
-    versionRange="[1.2.0,)"
-    ordering="AFTER"
-    side="BOTH"
+${geostrata_dependency_block}
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

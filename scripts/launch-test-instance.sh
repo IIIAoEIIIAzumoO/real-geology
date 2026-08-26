@@ -18,7 +18,7 @@ Usage: ./scripts/launch-test-instance.sh [client|server] [options]
 
 Options:
   --server        Launch dedicated server (same as positional "server")
-  --no-build      Skip ./gradlew build (faster relaunch)
+  --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
   --help          Show this help
 
@@ -90,8 +90,8 @@ echo
 if [[ "$STAGE_JARS" -eq 1 ]]; then
   echo "==> Staging JARs into run-publish-test/mods/"
   mkdir -p "$GAME_DIR/mods"
-  ./gradlew build --no-daemon -q
-  JAR="build/libs/realgeology-${VERSION}.jar"
+  ./gradlew :neoforge-1.21.1:build --no-daemon -q
+  JAR="neoforge-1.21.1/build/libs/realgeology-${VERSION}.jar"
   if [[ ! -f "$JAR" ]]; then
     echo "Built JAR not found: $JAR" >&2
     exit 1
@@ -104,7 +104,7 @@ fi
 
 if [[ "$DO_BUILD" -eq 1 ]]; then
   echo "==> Building mod"
-  ./gradlew build --no-daemon -q
+  ./gradlew :neoforge-1.21.1:build --no-daemon -q
   echo
 fi
 
@@ -114,4 +114,4 @@ if [[ "$MODE" == "server" ]]; then
 fi
 
 echo "==> Launching Gradle $TASK (NeoForge dev)"
-exec ./gradlew "$TASK" --no-daemon
+exec ./gradlew ":neoforge-1.21.1:$TASK" --no-daemon

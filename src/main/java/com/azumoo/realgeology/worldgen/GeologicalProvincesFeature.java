@@ -3,11 +3,11 @@ package com.azumoo.realgeology.worldgen;
 import com.azumoo.realgeology.RealGeology;
 import com.azumoo.realgeology.RealGeologyConfig;
 import com.azumoo.realgeology.block.HostedOreBlock;
+import com.azumoo.realgeology.compat.GameCompat;
+import com.azumoo.realgeology.compat.RockPalette;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -156,20 +156,16 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
     private static final TagKey<Biome> RIVER = biomeTag("is_river");
     private static final TagKey<Biome> BEACH = biomeTag("is_beach");
     private static final TagKey<Biome> BADLANDS = biomeTag("is_badlands");
-    private static final TagKey<Biome> DEEP_OCEAN = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "is_deep_ocean"));
-    private static final TagKey<Biome> TERRALITH_HIGHLANDS = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("terralith", "highlands"));
-    private static final TagKey<Biome> TERRALITH_CLIFFS = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("terralith", "cliffs"));
-    private static final TagKey<Biome> TERRALITH_VOLCANIC = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("terralith", "volcanic"));
+    private static final TagKey<Biome> DEEP_OCEAN = GameCompat.biomeTag("minecraft", "is_deep_ocean");
+    private static final TagKey<Biome> TERRALITH_HIGHLANDS = GameCompat.biomeTag("terralith", "highlands");
+    private static final TagKey<Biome> TERRALITH_CLIFFS = GameCompat.biomeTag("terralith", "cliffs");
+    private static final TagKey<Biome> TERRALITH_VOLCANIC = GameCompat.biomeTag("terralith", "volcanic");
     public GeologicalProvincesFeature(Codec<NoneFeatureConfiguration> codec) { super(codec); }
 
     @Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
         WorldGenLevel level = ctx.level(); long seed = level.getSeed(); BlockPos o = ctx.origin();
         RealGeologyConfig.WorldgenDebugMode debugMode = RealGeologyConfig.worldgenDebugMode();
-        int minX = o.getX() & ~15, minZ = o.getZ() & ~15, minY = Math.max(level.getMinBuildHeight(), -64);
+        int minX = o.getX() & ~15, minZ = o.getZ() & ~15, minY = Math.max(GameCompat.minY(level), -64);
         if (FIRST_PLACEMENT.compareAndSet(false, true)) {
             RealGeology.LOGGER.info("Real Geology is generating provinces and folded strata in newly created chunks");
         }
@@ -276,8 +272,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         Block b = s.getBlock();
         if (b == Blocks.STONE || b == Blocks.DEEPSLATE || b == Blocks.GRANITE || b == Blocks.DIORITE || b == Blocks.ANDESITE || b == Blocks.TUFF
                 || b == Blocks.BLACKSTONE || b == Blocks.BASALT || b == Blocks.SMOOTH_BASALT) return true;
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(b);
-        return id.getNamespace().equals("geostrata") && !id.getPath().contains("_ore");
+        return GameCompat.blockNamespace(b).equals("geostrata") && !GameCompat.blockPath(b).contains("_ore");
     }
     private static String volcanicReplacement(BlockState state, int y) {
         Block block = state.getBlock();
@@ -332,7 +327,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
      * left alone; cliffs and mountain shoulders gain readable outcrops.
      */
     private static void placeSurfaceOutcrop(WorldGenLevel level, long seed, GeologicalColumn column, int x, int z, int terrainY, Environment environment, BlockPos.MutableBlockPos pos) {
-        if (terrainY <= level.getMinBuildHeight() || environment.underwater()) return;
+        if (terrainY <= GameCompat.minY(level) || environment.underwater()) return;
         pos.set(x, terrainY, z);
         BlockState surface = level.getBlockState(pos);
         if (!naturalLooseSurface(surface)) return;
@@ -363,7 +358,7 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
      * evaluate false, leaving the seed-based geology usable in a plain pack.
      */
     private static TagKey<Biome> biomeTag(String path) {
-        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", path));
+        return GameCompat.biomeTag("c", path);
     }
 
     private static Environment environment(WorldGenLevel level, int x, int z, int terrainY, BlockPos.MutableBlockPos pos) {
@@ -382,9 +377,9 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         int broadElevation = (terrainY * 2 + broadWest + broadEast + broadNorth + broadSouth) / 6 - 63;
         int relief = Math.max(Math.max(Math.abs(terrainY - west), Math.abs(terrainY - east)),
                 Math.max(Math.abs(terrainY - north), Math.abs(terrainY - south)));
-        pos.set(x, Math.max(level.getMinBuildHeight(), terrainY), z);
+        pos.set(x, Math.max(GameCompat.minY(level), terrainY), z);
         var biome = level.getBiome(pos);
-        String id = biome.unwrapKey().map(key -> key.location().getPath()).orElse("");
+        String id = biome.unwrapKey().map(GameCompat::biomePath).orElse("");
         boolean aquatic = biome.is(AQUATIC) || worldSurfaceY != terrainY;
         boolean river = biome.is(RIVER);
         boolean beach = biome.is(BEACH);
@@ -1107,23 +1102,21 @@ public final class GeologicalProvincesFeature extends Feature<NoneFeatureConfigu
         // non-vanilla mineral visually inherit the actual GeoStrata host.
         Block hosted = RealGeology.hostedOre(ore);
         if (hosted != null) return hosted.defaultBlockState().setValue(HostedOreBlock.HOST, HostedOreBlock.Host.fromRock(host));
-        Block geo = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("geostrata", host + "_" + ore + "_ore"));
-        if (geo != Blocks.AIR) return geo.defaultBlockState();
+        Block geo = GameCompat.block("geostrata", host + "_" + ore + "_ore");
+        if (geo != null && geo != Blocks.AIR) return geo.defaultBlockState();
         return rock(host);
     }
     private static BlockState rock(String n) {
         if (n.equals("kimberlite")) return RealGeology.KIMBERLITE.get().defaultBlockState();
-        return named("geostrata:" + n, "stone");
+        return RockPalette.rockState(n);
     }
     private static BlockState named(String id, String fallback) {
-        Block b = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(id));
-        if (b != Blocks.AIR) return b.defaultBlockState();
-        return BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("geostrata", fallback)).defaultBlockState();
+        return RockPalette.namedState(id, fallback);
     }
     private static BlockState firstExisting(String fallback, String... ids) {
         for (String id : ids) {
-            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(id));
-            if (block != Blocks.AIR) return block.defaultBlockState();
+            Block block = GameCompat.block(id);
+            if (block != null && block != Blocks.AIR) return block.defaultBlockState();
         }
         return rock(fallback);
     }
