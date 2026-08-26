@@ -6,6 +6,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 MODPACK_MODS="${MODPACK_MODS:-${HOME}/.minecraft/versions/Modern Industry & Colonies/mods}"
+MODPACK_GAME_DIR="${MODPACK_GAME_DIR:-$(dirname "$MODPACK_MODS")}"
 GAME_DIR="$ROOT/run-publish-test"
 LIBS_DIR="$ROOT/libs"
 MODE="client"
@@ -22,12 +23,13 @@ Options:
   --server        Launch dedicated server (same as positional "server")
   --no-build      Skip ./gradlew :neoforge-1.21.1:build (faster relaunch)
   --stage-jars    Copy release JAR + libs/*.jar into run-publish-test/mods/ (optional QA)
-  --shaders       Copy shader stack JARs from MODPACK_MODS into run-publish-test/mods/
-  --dry-run       With --shaders: list JARs that would be copied; do not build or launch
+  --shaders       Copy Sodium/Iris JARs, shaderpack(s), and Iris/Sodium config from modpack
+  --dry-run       With --shaders: list copies only; do not build or launch
   --help          Show this help
 
 Environment:
   MODPACK_MODS    Folder to copy GeoStrata/Architectury from if libs/ is empty
+  MODPACK_GAME_DIR  Modpack instance root (default: parent of MODPACK_MODS)
   ENABLE_SHADERS  Set to 1 to enable --shaders (same as passing --shaders)
 USAGE
 }
@@ -67,6 +69,79 @@ ensure_lib() {
   mkdir -p "$LIBS_DIR"
   cp -f "$src" "$LIBS_DIR/"
   echo "Copied $(basename "$src") -> libs/"
+}
+
+
+copy_modpack_file() {
+  local rel="$1"
+  local src="$MODPACK_GAME_DIR/$rel"
+  local dest="$GAME_DIR/$rel"
+  if [[ ! -f "$src" ]]; then
+    return 1
+  fi
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "    Would copy: $src -> $dest"
+  else
+    mkdir -p "$(dirname "$dest")"
+    cp -f "$src" "$dest"
+    echo "    Copied: $rel"
+  fi
+  return 0
+}
+
+stage_shaderpacks_and_config() {
+  echo "==> Staging shader packs + Iris/Sodium config (test instance only)"
+  if [[ ! -d "$MODPACK_GAME_DIR" ]]; then
+    echo "    Skipped — MODPACK_GAME_DIR not found: $MODPACK_GAME_DIR" >&2
+    return 1
+  fi
+  echo "    Modpack game dir: $MODPACK_GAME_DIR"
+
+  local pack_dir="$MODPACK_GAME_DIR/shaderpacks"
+  local copied_packs=0
+  if [[ -d "$pack_dir" ]]; then
+    local z
+    shopt -s nullglob
+    for z in "$pack_dir"/*.zip; do
+      if [[ "$DRY_RUN" -eq 1 ]]; then
+        echo "    Would copy shaderpack: $(basename "$z") -> $GAME_DIR/shaderpacks/"
+      else
+        mkdir -p "$GAME_DIR/shaderpacks"
+        cp -f "$z" "$GAME_DIR/shaderpacks/"
+        echo "    Copied shaderpack: $(basename "$z")"
+      fi
+      copied_packs=1
+    done
+    shopt -u nullglob
+    if [[ "$copied_packs" -eq 0 ]]; then
+      echo "    No .zip shader packs in $pack_dir" >&2
+    fi
+  else
+    echo "    No shaderpacks/ in modpack game dir" >&2
+  fi
+
+  local rel
+  for rel in \
+    config/iris.properties \
+    config/sodium-options.json \
+    config/sodium-fingerprint.json \
+    config/sodium-mixins.properties \
+    config/iris-excluded.json; do
+    if ! copy_modpack_file "$rel"; then
+      echo "    Skipped $rel — not in modpack" >&2
+    fi
+  done
+
+  if [[ "$DRY_RUN" -eq 0 && -f "$GAME_DIR/config/iris.properties" ]]; then
+    local selected
+    selected="$(grep -E '^shaderPack=' "$GAME_DIR/config/iris.properties" | cut -d= -f2- || true)"
+    if [[ -n "$selected" && ! -f "$GAME_DIR/shaderpacks/$selected" ]]; then
+      echo "    WARN: iris.properties shaderPack=$selected but file missing in run-publish-test/shaderpacks/" >&2
+    elif [[ -n "$selected" ]]; then
+      echo "    Active shader pack (iris.properties): $selected"
+    fi
+  fi
+  echo
 }
 
 copy_optional_mod_patterns() {
@@ -116,11 +191,14 @@ stage_shader_mods() {
     "oculus-*-neoforge*.jar" \
     "oculus-neoforge-*.jar" \
     "oculus-*.jar" && staged=1 || true
+  copy_optional_mod_patterns "Entity Culling (optional)" \
+    "entityculling-neoforge-*.jar" && staged=1 || true
+  stage_shaderpacks_and_config
   if [[ "$staged" -eq 0 ]]; then
     echo "    No shader renderer JARs found — continuing without shaders (optional)." >&2
   else
-    echo "    Shader stack: Sodium+Iris and/or Embeddium+Oculus (from MODPACK_MODS or Modrinth)."
-    echo "    Place a shader pack in run-publish-test/shaderpacks/ and enable in Video Settings."
+    echo "    Shader stack: Sodium+Iris (+ optional Entity Culling) from MODPACK_MODS."
+    echo "    Shader pack + iris.properties copied from MODPACK_GAME_DIR when present."
   fi
   echo
 }

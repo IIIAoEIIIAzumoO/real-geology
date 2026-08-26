@@ -149,34 +149,37 @@ Copies `realgeology-*.jar` plus `libs/*.jar` into `run-publish-test/mods/`. Stil
 
 ## Screenshots / shaders
 
-Optional — **not** part of the published mod or Modrinth dependency list.
+Optional — **not** part of the published mod or Modrinth dependency list. Shader mods are never listed in `neoforge.mods.toml` or the Modrinth dependency graph.
 
-### Shader JARs in Modern Industry & Colonies (`MODPACK_MODS`)
+**For screenshot quality**, `--shaders` copies **Sodium**, **Iris**, **shaderpack** `.zip` files, and **Iris/Sodium config** from your modpack game directory (`MODPACK_GAME_DIR`, default `~/.minecraft/versions/Modern Industry & Colonies/`) into `run-publish-test/`. JARs come from `MODPACK_MODS` (`…/mods/`).
 
-Observed in `~/.minecraft/versions/Modern Industry & Colonies/mods/` (NeoForge 1.21.1):
+If Iris loads but the world looks flat/vanilla, check `run-publish-test/logs/latest.log` for `Shaders are disabled because no valid shaderpack is selected` — that means `shaderpacks/` was empty or `config/iris.properties` had `shaderPack=` blank. Re-run with `--shaders` so Complementary (or your pack) and `iris.properties` are copied.
 
-| JAR | Role |
-|-----|------|
-| `sodium-neoforge-0.8.13-beta.2%2Bmc1.21.1.jar` | Sodium (note `%2B` instead of `+` in filename) |
-| `iris-neoforge-1.8.14-beta.1+mc1.21.1.jar` | Iris |
-| `entityculling-neoforge-1.10.5-mc1.21.1.jar` | Optional perf (not copied by `--shaders`) |
+### What Modern Industry & Colonies provides (NeoForge 1.21.1)
 
-No Embeddium/Oculus in this pack — script still tries those patterns for other installs.
+| Source | Item |
+|--------|------|
+| `mods/` | `sodium-neoforge-…`, `iris-neoforge-…`, optional `entityculling-neoforge-…` |
+| `shaderpacks/` | e.g. `ComplementaryReimagined_r5.8.1.zip` |
+| `config/` | `iris.properties` (`shaderPack=…`, `enableShaders=true`), `sodium-options.json`, `sodium-fingerprint.json`, `sodium-mixins.properties`, `iris-excluded.json` |
 
-`--shaders` globs: `*mc1.21.1*` for Sodium/Iris (handles `+` and `%2B`). Missing shader JARs are **optional**; launch continues.
-
-NeoForge 1.21.1 uses **Sodium NeoForge + Iris NeoForge** (not Embeddium/Oculus). Your Modern Industry & Colonies pack already has compatible JARs.
+No Embeddium/Oculus in this pack — the script still tries those JAR patterns for other installs.
 
 ```bash
-./scripts/launch-test-instance.sh --shaders              # copy Iris + Sodium into run-publish-test/mods/
-ENABLE_SHADERS=1 ./scripts/launch-test-instance.sh       # same via env var
+./scripts/launch-test-instance.sh --shaders --dry-run   # list what would be copied (no launch)
+./scripts/launch-test-instance.sh --shaders             # stage mods + shaderpack + config, then launch
+MODPACK_GAME_DIR=/path/to/instance ./scripts/launch-test-instance.sh --shaders
+ENABLE_SHADERS=1 ./scripts/launch-test-instance.sh      # same via env var
 ```
 
-1. Launch with `--shaders` (copies from `MODPACK_MODS` or download from Modrinth).
-2. Drop a `.zip` shader pack into `run-publish-test/shaderpacks/`.
-3. In game: **Options → Video Settings → Shader Packs** → select pack.
+### Complementary / Reimagined (or any pack)
 
-Shader mods load from `run-publish-test/mods/` only; they are never listed in `neoforge.mods.toml`.
+1. Ensure the `.zip` exists in the modpack’s `shaderpacks/` (or copy it there once).
+2. Run `./scripts/launch-test-instance.sh --shaders` (or `--no-build` on relaunch after staging).
+3. Confirm `run-publish-test/config/iris.properties` has `shaderPack=YourPack.zip` and the file is under `run-publish-test/shaderpacks/`.
+4. In game, **Options → Video Settings → Shader Packs** should show the pack enabled (Iris reads `iris.properties` on startup).
+
+To use a different pack without the modpack: drop the `.zip` into `run-publish-test/shaderpacks/`, set `shaderPack=` in `run-publish-test/config/iris.properties`, restart the client.
 
 
 ## Dev vs publish debug policy
