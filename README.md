@@ -6,10 +6,12 @@ Real Geology replaces generic underground stone with seed-stable geological prov
 
 ## Supported versions
 
+**Supported: Minecraft Java 1.21.1 only** for this public beta (NeoForge 21.1.x + GeoStrata 1.2+).
+
 | Minecraft | NeoForge | Status | GeoStrata | Artifact |
 |-----------|----------|--------|-----------|----------|
 | **1.21.1** | 21.1.x | **Supported beta** | Required | `neoforge-1.21.1/build/libs/realgeology-0.21.0-beta.2.jar` |
-| **26.2** | 26.2.x | **Experimental compile** | Not available — vanilla rock fallback | `neoforge-26.2/build/libs/realgeology-26.2-0.21.0-beta.2.jar` |
+| **26.2** | 26.2.x | **Experimental compile** — not published to Modrinth | Not available — vanilla rock fallback | `neoforge-26.2/build/libs/realgeology-26.2-0.21.0-beta.2.jar` |
 
 See [PORTING-26.md](PORTING-26.md) for the 26.2 port status, blockers, and build commands.
 
@@ -56,6 +58,10 @@ Terralith/Geophilic are optional but recommended: Real Geology reads biome and t
 - **New world only** for serious testing.
 - **GeoStrata required** — there is no standalone rock pack yet (see [ROADMAP.md](ROADMAP.md)).
 
+### Known issues (post-beta, not blockers)
+
+Aug 2026 playtesting found rough province transitions at some biome edges and debug-section artifacts. Gameplay is stable enough for beta testers; fixes are tracked for after launch. Details: [docs/KNOWN-ISSUES-PLATE-GEN.md](docs/KNOWN-ISSUES-PLATE-GEN.md).
+
 ## Debug: inspect folds without WorldEdit
 
 In `config/realgeology-common.toml` **before** creating a test world:
@@ -99,7 +105,7 @@ Dev server with GeoStrata (1.21.1):
 ./gradlew :neoforge-1.21.1:runServer
 ```
 
-Contributors: read [CONTRIBUTING.md](CONTRIBUTING.md). Release maintainers: [PUBLISHING.md](PUBLISHING.md).
+Contributors: read [CONTRIBUTING.md](CONTRIBUTING.md). Release maintainers: [PUBLISHING.md](PUBLISHING.md) and [docs/PUBLISH-CHECKLIST.md](docs/PUBLISH-CHECKLIST.md).
 
 ## License
 

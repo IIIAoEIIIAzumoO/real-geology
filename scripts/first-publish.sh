@@ -28,10 +28,13 @@ if ! gh auth status >/dev/null 2>&1; then
   gh auth login --hostname github.com --git-protocol https --web
 fi
 
-echo "==> Building release JAR"
-./gradlew clean build --no-daemon
+echo "==> Building release JAR (1.21.1 primary target only)"
+./gradlew :neoforge-1.21.1:build --no-daemon
 
-JAR="build/libs/realgeology-${VERSION}.jar"
+JAR="neoforge-1.21.1/build/libs/realgeology-${VERSION}.jar"
+# Keep legacy path for release.yml / Modrinth docs
+mkdir -p build/libs
+cp -f "$JAR" "build/libs/realgeology-${VERSION}.jar"
 if [[ ! -f "$JAR" ]]; then
   echo "Expected JAR not found: $JAR"
   exit 1
