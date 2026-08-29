@@ -512,7 +512,23 @@ flowchart LR
 
 ---
 
-## 10. Key source files (quick index)
+## 10. Deployment profiles
+
+This paper describes **0.21.0-beta.2** behavior in source. What you see in-game depends on which game directory and JAR you launch. As of 2026-08-29:
+
+| Profile | Game directory | Real Geology version | GeoStrata | Terralith | Notes |
+|---------|----------------|----------------------|-----------|-----------|-------|
+| **run-publish-test** (Gradle dev) | `geology-overhaul/run-publish-test/` | **0.21.0-beta.2** — loaded from the `:neoforge-1.21.1` dev run classpath (`publishTestClient` / `runPublishTestClient`); optional `./scripts/launch-test-instance.sh --stage-jars` copies `realgeology-*.jar` into `run-publish-test/mods/` | Copied from `libs/` or `MODPACK_MODS` at launch | **Not** in the default minimal instance | Typical QA config: `worldgen_mode = "half_cut"`, `variable_tectonic_base = false`, `karst_cave_mode` default **off**. See [TEST-INSTANCE.md](../TEST-INSTANCE.md). |
+| **realgeology-minimal-world-test** (TLauncher) | `~/.minecraft/versions/Modern_Industry_Colonies_1.21.1/realgeology-minimal-world-test/` | **0.21.0-beta.2** (`realgeology-0.21.0-beta.2.jar`) — same `mod_version` as [gradle.properties](../gradle.properties); byte hash may differ from a fresh `./gradlew :neoforge-1.21.1:jar` build | `geostrata-1.2.0-1.21.1-NEOFORGE.jar` | **Absent** — province logic uses vanilla elevation / biome heuristics (Section 4.4 fallback) | Stripped mod set (GeoStrata + Real Geology + Architectury + Sodium/Iris + Distant Horizons). Config: `worldgen_mode = "section"`, `karst_cave_mode = "lab"`, `variable_tectonic_base = true`, `spawn_highland_near_cut = true`. **Not** representative of a Terralith modpack playthrough. |
+| **Modern Industry & Colonies** (full modpack) | `~/.minecraft/versions/Modern Industry & Colonies/` | **0.21.0-fault-wedges-curved-asthenosphere** (`realgeology-0.21.0-fault-wedges-curved-asthenosphere.jar`) — **older pre-beta.2 line**; do not assume parity with this paper without diffing JARs | `geostrata-1.2.0-1.21.1-NEOFORGE.jar` | `Terralith_1.21.1_v2.6.2_Neoforge.jar` | Normal play: `worldgen_mode = "off"` ([docs/publish/realgeology-common-beta.toml](publish/realgeology-common-beta.toml)); pack config may set `karst_cave_mode = "lab"` for karst QA. Lost Cities, Create, etc. add structure and surface competition not covered here. |
+
+**Related instance:** `Modern_Industry_Colonies_1.21.1/` (underscore pack folder) ships **beta.2** in its shared `mods/` folder (~46 mods, no Terralith in that tree). Sub-instances include `realgeology-minimal-world-test` (above) and `realgeology-terrain-test` (beta.2 + a broader MIC slice, still without Terralith).
+
+**When this paper applies:** Treat **beta.2** source and the **run-publish-test** / **minimal-world-test** configs as the reference for current architecture. Treat the **full modpack fault-wedges JAR** as a separate deployment until the pack is updated to beta.2.
+
+---
+
+## 11. Key source files (quick index)
 
 | File | Responsibility |
 |------|----------------|
